@@ -1,0 +1,53 @@
+services:
+  django-soft:
+    container_name: ${DJANGO_CONTAINER_NAME}
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - psql
+    restart: always
+    entrypoint: bash ./launch.sh
+    volumes:
+      - .:/usr/src/app/
+    env_file: .env
+    expose:
+      - 8000
+    ports:
+      - "8081:8000"
+    networks:
+      - back
+      - front
+
+  psql:
+    container_name: ${PSQL_CONTAINER_NAME}
+    image: postgres
+    restart: unless-stopped
+    shm_size: 256mb
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${PSQL_ROOT_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_MASTER_USER}
+      DB_USER: ${PSQL_USER}
+      DB: ${PSQL_DATABASE}
+      DB_PASS: ${PSQL_PASS}
+    volumes:
+      - ./postgres/init.sh:/scripts/init.sh
+    networks:
+      - back
+
+volumes:
+  psql:
+
+networks:
+  front:
+    ipam:
+      config:
+        - subnet: 172.32.0.0/16
+  back:
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
