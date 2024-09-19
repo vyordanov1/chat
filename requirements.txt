@@ -15,5 +15,8 @@ typing_extensions==4.11.0
 tzdata==2024.1
 psycopg2==2.9.9
 psycopg2-binary==2.9.9
+channels_redis
+channels
+daphne
 
 

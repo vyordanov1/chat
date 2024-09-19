@@ -2,3 +2,6 @@
 .DS_Store
 psql/
 .env
+app/app/__pycache__/
+redis_data/
+app/chat/__pycache__/

@@ -1,6 +1,6 @@
 services:
   django-soft:
-    container_name: ${DJANGO_CONTAINER_NAME}
+    container_name: dchat
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -20,14 +20,14 @@ services:
       - front
 
   psql:
-    container_name: ${PSQL_CONTAINER_NAME}
+    container_name: pchat
     image: postgres
     restart: unless-stopped
     shm_size: 256mb
     expose:
       - 5432
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_PASSWORD: ${PSQL_ROOT_PASSWORD}
       POSTGRES_USER: ${POSTGRES_MASTER_USER}
@@ -39,8 +39,24 @@ services:
     networks:
       - back
 
+  redis:
+    container_name: redis
+    image: redis/redis-stack-server:latest
+    expose:
+      - 6379
+    volumes:
+      - redis_data:/data
+    networks:
+      - back
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
 volumes:
   psql:
+  redis_data:
 
 networks:
   front:
