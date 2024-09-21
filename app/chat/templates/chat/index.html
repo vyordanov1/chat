@@ -13,6 +13,7 @@
             </div>
             <div style="float: right;">
                 <a href="{% url 'logout' %}">
+                    Logout
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             </div>
@@ -24,10 +25,10 @@
         <div class="chat-members-div">
             <div class="member-info">
                 {{ u.username }}
-                {% if u.is_active %}
+                {% if u.id in logged_in_users %}
                     <i class="fa-solid fa-check"></i>
                 {% else %}
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark" style="color:red"></i>
                 {% endif %}
             </div>
             <div class="start-chat">
