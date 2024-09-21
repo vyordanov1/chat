@@ -1,10 +1,10 @@
-# Django project quick template
+# Django Chat App
 
-Simple Django project template designed for quick setup on Docker containers
+Simple chat app built on Django framework utilizing the use of django channels and websockets.
 
 ## Installation
 
-This template requires [Docker](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/) as well as [Docker compose](https://docs.docker.com/compose/) to run
+This project requires [Docker](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/) as well as [Docker compose](https://docs.docker.com/compose/) to run
 
 ### Create your .env file with the following content and enter your credentials
 ```
@@ -54,7 +54,7 @@ docker compose up -d
 
 Run your project on [127.0.0.1:8080](http://127.0.0.1:8080)
 
-## Getting started
+## Post build procedures
 --------------------
 
 ### Create a superuser for your Django [admin](http://127.0.0.1:8080/admin)
@@ -68,15 +68,6 @@ Or from outside the container
 docker exec -it django-soft python3 app/manage.py createsuperuser 
 ```
 
-### Create your first Django app
-```sh
-docker exec -it django-soft bash
-python3 app/manage.py startapp myapp
-```
-Or from outside the container
-```sh
-docker exec -it django-soft python3 app/manage.py startapp myapp
-```
 
 ## License
 
