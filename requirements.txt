@@ -18,5 +18,6 @@ psycopg2-binary==2.9.9
 channels_redis
 channels
 daphne
+django_browser_reload
 
 
