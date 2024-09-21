@@ -1,25 +1,24 @@
-import logging
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from chat.forms import *
 from django.contrib.auth import login, authenticate, logout
 from chat.forms import RegistrationForm
 from django.http import HttpResponseRedirect
-from django.db.models.functions import Replace
-from django.db.models import F
 from .models import Profile, ChatRoom, UserChatRoom
-
-logger = logging.getLogger(__name__)
+from django.contrib.sessions.models import Session
+from django.utils import timezone
 
 # Create your views here.
 
 def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    logged_in_users = get_active_users()
     payload = {
         'users': User.objects.all().exclude(
             username=request.user.username,
         ),
+        'logged_in_users': logged_in_users,
     }
     return render(request, 'chat/index.html', context=payload)
 
@@ -55,7 +54,6 @@ def log_in(request):
 
 
 def log_out(request):
-    logger.info('User logged out')
     logout(request)
     return redirect('login')
 
@@ -66,13 +64,14 @@ def room(request, room_name):
             uuid=room_name
         ).user_id
     )
-
     chat_room = get_or_create_room(request.user, chat_user)
+    logged_in_users = get_active_users()
 
     context = {
         "room_name": chat_room.uuid_redacted,
-        "chat_user": chat_user
+        "chat_user": chat_user,
     }
+    # return JsonResponse(context)
     return render(request, template_name='chat/room.html', context=context)
 
 
@@ -95,6 +94,19 @@ def get_or_create_room(user, dest_user):
 
     return chat_room
 
+
+def get_active_users():
+    sessions = Session.objects.filter(expire_date__gte=timezone.now())
+    user_ids = []
+    for session in sessions:
+        data = session.get_decoded()
+        user_id = data.get('_auth_user_id', None)
+        if user_id:
+            user_ids.append(user_id)
+
+    logged_in_users = [u.id for u in User.objects.filter(id__in=user_ids)]
+
+    return logged_in_users
 
 
 

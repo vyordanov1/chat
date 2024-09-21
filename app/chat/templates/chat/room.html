@@ -21,7 +21,7 @@
             <div style="clear: both;"></div>
         </div>
         <div class="chat__message__container" id="chat__message__container">
-            <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+{#            <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
         </div>
         <div class="chat-input-container">
             <input type="text" id="chat-message-input" placeholder="Type your message..." />
@@ -29,11 +29,15 @@
         </div>
     </div>
     {{ room_name|json_script:"room-name"}}
+    {{ chat_user.username|json_script:"chat_user" }}
+    {{ request.user.username|json_script:"user" }}
     <script>
 
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        console.log(roomName)
-
+        const chatUser = JSON.parse(document.getElementById('chat_user').textContent);
+        const username = JSON.parse(document.getElementById('user').textContent);
+        let currentTime = new Date();
+        let time = currentTime.toLocaleTimeString();
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -44,7 +48,19 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            {#document.querySelector('#chat-log').value += (data.message + '\n');#}
+            let messageContainer = document.querySelector("#chat__message__container");
+            let div = document.createElement("div");
+            div.className = (data.username === chatUser) ? "chat-message right" : "chat-message left";
+            div.innerHTML = `<div class="message-content">
+                <span class="message-username">${data.username.charAt(0).toUpperCase() + data.username.slice(1)}</span>
+                <span class="message-text">${data.message}</span>
+                <span class="message-timestamp">${data.time}</span>
+            </div>`;
+            document.querySelector("#chat-message-input").value = "";
+            messageContainer.appendChild(div);
+            // Scroll to the bottom of the chat container
+            messageContainer.scrollTop = messageContainer.scrollHeight;
         };
 
         chatSocket.onclose = function(e) {
@@ -62,7 +78,9 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'username': username,
+                'time': time
             }));
             messageInputDom.value = '';
         };
