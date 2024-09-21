@@ -1,0 +1,151 @@
+a {
+    text-decoration: none;
+}
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5vh;
+    /*justify-content: center;*/
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+form {
+    max-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.branding {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #128C7E;
+    /* ChitChat brand color */
+}
+
+.btn-container {
+    text-align: center;
+}
+
+.reg-form {
+    padding-top: 1vh;
+    color: #128C7E;
+}
+
+button {
+    background-color: #128C7E;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #075e54;
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+    /*width: 85%;*/
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.chat-container {
+    min-width: 40vw;
+    max-width: 60vw;
+    margin: 0 auto;
+    padding: 10px;
+}
+.chat-header {
+    text-align: center;
+    background-color: #075e54;
+    color: #fff;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chat-header h1 {
+    font-size: 24px;
+}
+
+.chat-logout {
+    text-align: right;
+    padding: 10px;
+}
+
+.chat__members__container {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 10px;
+    height: 300px;
+    max-height: 300px;
+    /* Set a maximum height for the chat container */
+    overflow-y: auto;
+    /* Add a vertical scrollbar when needed */
+}
+
+.chat-members-div {
+    display: flex;
+    margin-top: 2vh;
+    justify-content: space-between;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    align-items: center;
+    height: 5vh;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #036358;
+}
+
+.start-chat {
+    float: right;
+}
+
+.chat__message__container {
+    background-color: #f5f5f5;
+    padding: 10px;
+    padding-top: 2vh;
+    border-radius: 10px;
+    height: 300px;
+    max-height: 300px;
+    /* Set a maximum height for the chat container */
+    overflow-y: auto;
+    /* Add a vertical scrollbar when needed */
+}

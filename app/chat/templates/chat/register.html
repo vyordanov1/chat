@@ -1,0 +1,22 @@
+{% extends "chat/base.html" %}
+{% load static %}
+{% block content %}
+    <h2>Sign up</h2>
+    <form method="POST" class="login-form" id="login-form">
+    {% csrf_token %}
+        <div id="username-input">
+            {{form.username}}
+        </div>
+        <div id="email-input">
+            {{form.email}}
+        </div>
+        <div id="password1-input">
+            {{form.password1}}
+        </div>
+        <div id="password2-input">
+            {{form.password2}}
+        </div>
+        <button type="submit">Sign up</button>
+    <a href="{% url 'login' %}" class="reg-form">Back</a>
+    </form>
+{% endblock content %}

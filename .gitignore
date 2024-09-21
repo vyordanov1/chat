@@ -5,3 +5,5 @@ psql/
 app/app/__pycache__/
 redis_data/
 app/chat/__pycache__/
+app/chat/migrations/
+staticfiles/
