@@ -64,12 +64,12 @@ Every other run only needs
 docker compose up -d
 ```
 
-Run your project on [127.0.0.1:8080](http://127.0.0.1:8080)
+Run your project on [127.0.0.1:8081](http://127.0.0.1:8081)
 
 ## Post build procedures
 --------------------
 
-### Create a superuser for your Django [admin](http://127.0.0.1:8080/admin)
+### Create a superuser for your Django [admin](http://127.0.0.1:8081/admin)
 
 ```sh
 docker exec -it django-soft bash
