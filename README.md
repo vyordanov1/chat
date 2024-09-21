@@ -25,6 +25,18 @@ PSQL_CONTAINER_NAME=''
 DJANGO_CONTAINER_NAME=''
 ```
 
+### Update the compose.yml file and set the Django and Postgres container names
+Example:
+```
+  psql:
+    container_name: pchat
+
+  django-soft:
+    container_name: dchat
+```
+### Make sure the container names match the container names in your .env file!
+
+
 #### - Run the Project
 
 Use the run script to automatically run the containers
