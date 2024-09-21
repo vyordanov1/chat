@@ -1,27 +1,91 @@
-<!-- chat/templates/chat/index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Rooms</title>
-</head>
-<body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+{% extends "chat/base.html" %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+<div class="chat-container">
+        <div class="chat-header">
+            <h1>Chat memebers <i class="fas fa-comment"></i></h1>
+        </div>
+    <div class="chat-logout">
+        {% if request.user.is_authenticated %}
+            <div style="float: left; font-weight: bold; color: #036358">
+                {{ user.username }}
+            </div>
+            <div style="float: right;">
+                <a href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+            <div style="clear: both;"></div>
+        {% endif %}
+    </div>
+    <div class="chat__members__container" id="id_chat_members_container">
+    {% for u in users %}
+        <div class="chat-members-div">
+            <div class="member-info">
+                {{ u.username }}
+                {% if u.is_active %}
+                    <i class="fa-solid fa-check"></i>
+                {% else %}
+                    <i class="fa-solid fa-xmark"></i>
+                {% endif %}
+            </div>
+            <div class="start-chat">
+                <a href="/chat/{{ u.profile.uuid|remove_hyphens}}/">
+                    <button>
+                        <i class="fa-regular fa-message"></i>
+                        Chat
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content %}
 
-    <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.key === 'Enter') {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
-        };
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/chat/' + roomName + '/';
-        };
-    </script>
-</body>
-</html>
+
+{#<!-- chat/templates/chat/index.html -->#}
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <meta charset="utf-8"/>#}
+{#    <title>Chat Rooms</title>#}
+{#</head>#}
+{#<body>#}
+{#    Users available<br>#}
+{#<table>#}
+{#    <tr>#}
+{#        <th>User</th>#}
+{#        <th>Status</th>#}
+{#        <th></th>#}
+{#    </tr>#}
+{#    {% for user in users %}#}
+{#        <tr>#}
+{#            <td>{{ user.username }}</td>#}
+{#            <td>Online{% if user.is_active %}{% else %}Offline{% endif %}</td>#}
+{#            <td>#}
+{#                {{ user.profile.uuid }}#}
+{#            </td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+{#</table>#}
+{#    <input id="room-name-input" type="text" size="100"><br>#}
+{#    <input id="room-name-submit" type="button" value="Enter">#}
+{##}
+{#    <script>#}
+{#        document.querySelector('#room-name-input').focus();#}
+{#        document.querySelector('#room-name-input').onkeyup = function(e) {#}
+{#            if (e.key === 'Enter') {  // enter, return#}
+{#                document.querySelector('#room-name-submit').click();#}
+{#            }#}
+{#        };#}
+{##}
+{#        document.querySelector('#room-name-submit').onclick = function(e) {#}
+{#            var roomName = document.querySelector('#room-name-input').value;#}
+{#            window.location.pathname = '/chat/' + roomName + '/';#}
+{#        };#}
+{#    </script>#}
+{#</body>#}
+{#</html>#}
