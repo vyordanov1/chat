@@ -7,7 +7,7 @@ from chat.forms import RegistrationForm
 from django.http import HttpResponseRedirect
 from django.db.models.functions import Replace
 from django.db.models import F
-from .models import Profile
+from .models import Profile, ChatRoom, UserChatRoom
 
 logger = logging.getLogger(__name__)
 
@@ -67,13 +67,33 @@ def room(request, room_name):
         ).user_id
     )
 
+    chat_room = get_or_create_room(request.user, chat_user)
+
     context = {
-        "room_name": room_name,
+        "room_name": chat_room.uuid_redacted,
         "chat_user": chat_user
     }
     return render(request, template_name='chat/room.html', context=context)
 
 
+def get_or_create_room(user, dest_user):
+    if user.id > dest_user.id:
+        user, dest_user = dest_user, user
+
+    chat_room = ChatRoom.objects.filter(
+        userchatroom__user=user
+    ).filter(
+        userchatroom__user=dest_user
+    ).first()
+
+    if not chat_room:
+        chat_room = ChatRoom.objects.create()
+        chat_room.uuid_redacted = str(chat_room.uuid).replace('-', '')
+        chat_room.save()
+        UserChatRoom.objects.create(user=user, chat_room=chat_room)
+        UserChatRoom.objects.create(user=dest_user, chat_room=chat_room)
+
+    return chat_room
 
 
 
