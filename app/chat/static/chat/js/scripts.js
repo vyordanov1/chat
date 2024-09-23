@@ -15,7 +15,7 @@ chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     let messageContainer = document.querySelector("#chat__message__container");
     let div = document.createElement("div");
-    div.className = (data.username === chatUser) ? "chat-message right" : "chat-message left";
+    div.className = (data.username === username) ? "chat-message left" : "chat-message right";
     if (data.message != '') {
         div.innerHTML = `<div class="message-content">
         <span class="message-username">${data.username.charAt(0).toUpperCase() + data.username.slice(1)}</span>

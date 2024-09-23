@@ -1,0 +1,30 @@
+{% extends 'chat/main.html' %}
+{% load static %}
+{% block chat_container %}
+    <div class="container">
+    <a href="{% url 'create_room' %}">
+        <i class="fa-solid fa-plus"></i>
+        Create Room
+    </a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>UUID</th>
+            <th>Users</th>
+            <th>Delete</th>
+        </tr>
+        {% for r in rooms %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.uuid }}</td>
+                <td>{{ r.name }}</td>
+                <td>
+                    <a href="{% url 'delete_room' r.uuid %}">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock chat_container %}
