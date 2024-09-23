@@ -29,19 +29,21 @@
         Rooms
     </div><hr>
         {% for r in rooms %}
-        <div class="chat-members-div">
-            <div class="member-info">
-                {{ r.name }}
-            </div>
-            <div class="start-chat">
-                <a href="/chat/group/{{ r.uuid|remove_hyphens}}/">
-                    <button>
-                        <i class="fa-regular fa-message"></i>
-                        Join
-                    </button>
-                </a>
-            </div>
-        </div>
+            {% if r.is_public %}
+                <div class="chat-members-div">
+                    <div class="member-info">
+                        {{ r.name }}
+                    </div>
+                    <div class="start-chat">
+                        <a href="/chat/group/{{ r.uuid|remove_hyphens}}/">
+                            <button>
+                                <i class="fa-regular fa-message"></i>
+                                Join
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
     {% endfor %}
 
 {% endblock chat_container %}
