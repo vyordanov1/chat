@@ -19,14 +19,27 @@ def index(request):
             username=request.user.username,
         ),
         'logged_in_users': logged_in_users,
+        "page_data": {
+            'leave_btn': {
+                'url': 'logout',
+                'name': 'Logout'
+            },
+            'header': 'Chat members',
+        }
     }
-    return render(request, 'chat/index.html', context=payload)
+    return render(request, 'chat/members.html', context=payload)
 
 def register(request):
     form = RegistrationForm(request.POST)
     if form.is_valid():
-        form.save()
-        return redirect('index')
+        if User.objects.filter(
+            username=form.cleaned_data['username']
+        ).exists():
+            messages.info(request, 'Username already taken')
+            # return redirect('register')
+        else:
+            form.save()
+            return redirect('index')
     else:
         form = RegistrationForm()
     payload = {'form': form}
@@ -68,8 +81,14 @@ def room(request, room_name):
     logged_in_users = get_active_users()
 
     context = {
-        "room_name": chat_room.uuid_redacted,
-        "chat_user": chat_user,
+        "page_data": {
+            "leave_btn": {
+                "url": "index",
+                "name": "Leave Chat"
+            },
+            "chat_user": chat_user,
+            "room_name": chat_room.uuid_redacted,
+        }
     }
     # return JsonResponse(context)
     return render(request, template_name='chat/room.html', context=context)
@@ -108,5 +127,18 @@ def get_active_users():
 
     return logged_in_users
 
+
+def admin_page(request):
+    payload = {
+        "page_data": {
+            'header': 'Chat Admin Page',
+            'leave_btn': {
+                'url': 'index',
+                'name': 'Return'
+            },
+        }
+    }
+
+    return render(request, 'chat/admin.html', context=payload)
 
 

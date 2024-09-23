@@ -1,0 +1,25 @@
+{% extends "chat/main.html" %}
+{% load static %}
+{% block chat_container %}
+{% load custom_filters %}
+    {% for u in users %}
+        <div class="chat-members-div">
+            <div class="member-info">
+                {{ u.username }}
+                {% if u.id in logged_in_users %}
+                    <i class="fa-solid fa-check"></i>
+                {% else %}
+                    <i class="fa-solid fa-xmark" style="color:red"></i>
+                {% endif %}
+            </div>
+            <div class="start-chat">
+                <a href="/chat/{{ u.profile.uuid|remove_hyphens}}/">
+                    <button>
+                        <i class="fa-regular fa-message"></i>
+                        Chat
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock chat_container %}
