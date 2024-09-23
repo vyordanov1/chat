@@ -29,12 +29,17 @@ class ChatRoom(models.Model):
         null=True,
         editable=False
     )
+    name = models.CharField(
+        blank=True,
+        max_length=255,
+    )
 
 
 class UserChatRoom(models.Model):
     user = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
+        related_name='chatrooms',
     )
     chat_room = models.ForeignKey(
         to=ChatRoom,

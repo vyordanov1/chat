@@ -2,6 +2,9 @@
 {% load static %}
 {% block chat_container %}
 {% load custom_filters %}
+    <div class="container row align-items-center justify-content-center" style="font-size: 24px">
+        Users
+    </div><hr>
     {% for u in users %}
         <div class="chat-members-div">
             <div class="member-info">
@@ -22,4 +25,23 @@
             </div>
         </div>
     {% endfor %}
+    <div class="container row align-items-center justify-content-center" style="font-size: 24px">
+        Rooms
+    </div><hr>
+        {% for r in rooms %}
+        <div class="chat-members-div">
+            <div class="member-info">
+                {{ r.name }}
+            </div>
+            <div class="start-chat">
+                <a href="/chat/group/{{ r.uuid|remove_hyphens}}/">
+                    <button>
+                        <i class="fa-regular fa-message"></i>
+                        Join
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
 {% endblock chat_container %}

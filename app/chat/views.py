@@ -1,12 +1,14 @@
+import uuid
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from chat.forms import *
 from django.contrib.auth import login, authenticate, logout
 from chat.forms import RegistrationForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Profile, ChatRoom, UserChatRoom
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from random_word import RandomWords
 
 # Create your views here.
 
@@ -14,6 +16,7 @@ def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
     logged_in_users = get_active_users()
+    rooms = ChatRoom.objects.all()
     payload = {
         'users': User.objects.all().exclude(
             username=request.user.username,
@@ -25,7 +28,8 @@ def index(request):
                 'name': 'Logout'
             },
             'header': 'Chat members',
-        }
+        },
+        "rooms": rooms
     }
     return render(request, 'chat/members.html', context=payload)
 
@@ -78,9 +82,8 @@ def room(request, room_name):
         ).user_id
     )
     chat_room = get_or_create_room(request.user, chat_user)
-    logged_in_users = get_active_users()
 
-    context = {
+    payload = {
         "page_data": {
             "leave_btn": {
                 "url": "index",
@@ -91,7 +94,23 @@ def room(request, room_name):
         }
     }
     # return JsonResponse(context)
-    return render(request, template_name='chat/room.html', context=context)
+    return render(request, template_name='chat/room.html', context=payload)
+
+def group_chat(request, group_uuid):
+    room = ChatRoom.objects.get(uuid=group_uuid)
+
+    payload = {
+        "page_data": {
+            "leave_btn": {
+                "url": "index",
+                "name": "Leave Chat"
+            },
+            "chat_user": None,
+            "room_name": room.uuid_redacted
+        },
+        "room": room
+    }
+    return render(request, 'chat/room.html', context=payload)
 
 
 def get_or_create_room(user, dest_user):
@@ -107,6 +126,7 @@ def get_or_create_room(user, dest_user):
     if not chat_room:
         chat_room = ChatRoom.objects.create()
         chat_room.uuid_redacted = str(chat_room.uuid).replace('-', '')
+        chat_room.name = '-'.join([user.username, dest_user.username])
         chat_room.save()
         UserChatRoom.objects.create(user=user, chat_room=chat_room)
         UserChatRoom.objects.create(user=dest_user, chat_room=chat_room)
@@ -136,9 +156,54 @@ def admin_page(request):
                 'url': 'index',
                 'name': 'Return'
             },
-        }
+            "manage_rooms": 'manage_rooms'
+        },
     }
+    return render(request, 'chat/admin/admin.html', context=payload)
 
-    return render(request, 'chat/admin.html', context=payload)
+
+def manage_rooms(request):
+    chat_rooms = ChatRoom.objects.all()
+    rooms = []
+    for r in chat_rooms:
+        if r.uuid not in rooms:
+            rooms.append(
+                {
+                    "id": r.id,
+                    "uuid": r.uuid,
+                    "name": r.name,
+                    "members": [u.user for u in UserChatRoom.objects.filter(
+                        chat_room_id=r.id
+                    )]
+                }
+            )
+
+    payload = {
+        "page_data": {
+            "header": "Existing Chat Rooms",
+            "leave_btn": {
+                "url": "admin",
+                "name": "Return"
+            }
+        },
+        "rooms": rooms
+    }
+    return render(request, 'chat/admin/manage_rooms.html', context=payload)
+
+
+def create_room(request):
+    r = RandomWords()
+    room = ChatRoom.objects.create()
+    room.uuid_redacted = str(room.uuid).replace('-', '')
+    room.name = r.get_random_word()
+    room.save()
+    return redirect('manage_rooms')
+
+
+def delete_room(request, room_uuid):
+    if request.method == "GET":
+        room = get_object_or_404(ChatRoom, uuid=room_uuid)
+        room.delete()
+    return redirect('manage_rooms')
 
 

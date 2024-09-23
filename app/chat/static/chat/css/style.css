@@ -116,8 +116,9 @@ tr:nth-child(even) {
     background-color: #f5f5f5;
     padding: 10px;
     border-radius: 10px;
-    height: 300px;
-    max-height: 300px;
+    min-height: 300px;
+    height: fit-content;
+    max-height: 75vh;
     /* Set a maximum height for the chat container */
     overflow-y: auto;
     /* Add a vertical scrollbar when needed */
@@ -145,8 +146,9 @@ tr:nth-child(even) {
     padding: 10px;
     padding-top: 2vh;
     border-radius: 10px;
-    height: 65vh;
-    max-height: 70vh;
+    min-height: 300px;
+    height: fit-content;
+    max-height: 75vh;
     /* Set a maximum height for the chat container */
     overflow-y: auto;
     /* Add a vertical scrollbar when needed */
@@ -218,4 +220,44 @@ tr:nth-child(even) {
 .admin-card .icon {
     font-size: 3em;
     color: #036358;
+}
+
+#username-input input {
+    text-indent: 20px;
+}
+
+#username-input .icon {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#email-input .icon {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#email-input input {
+    text-indent: 20px;
+}
+
+#password1-input .icon {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#password1-input input {
+    text-indent: 20px;
+}
+
+#password2-input .icon {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#password2-input input {
+    text-indent: 20px;
 }

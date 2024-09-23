@@ -5,15 +5,19 @@
     <form method="POST" class="login-form" id="login-form">
     {% csrf_token %}
         <div id="username-input">
+            <i class="fa-solid fa-user icon"></i>
             {{form.username}}
         </div>
         <div id="email-input">
+            <i class="fa-solid fa-envelope icon"></i>
             {{form.email}}
         </div>
         <div id="password1-input">
+            <i class="fa-solid fa-lock icon"></i>
             {{form.password1}}
         </div>
         <div id="password2-input">
+            <i class="fa-solid fa-lock icon"></i>
             {{form.password2}}
         </div>
         <button type="submit">Sign up</button>
