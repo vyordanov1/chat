@@ -264,3 +264,36 @@ tr:nth-child(even) {
 #password2-input input {
     text-indent: 20px;
 }
+
+@media (max-width: 450px) {
+    .chat-container {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100%;
+        max-height: 100%;
+        padding: 0px;
+    }
+    .chat__members__container {
+        min-height: 90%;
+        height: 100%;
+    }
+    body {
+        padding-top: 0vh;
+    }
+    .chat-input-container {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    #chat-message-input {
+        width: 100%;
+    }
+    #chat-message-submit {
+        width: 100%;
+        border-radius: 0px;
+    }
+    .chat-header {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+}
