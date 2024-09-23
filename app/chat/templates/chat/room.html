@@ -31,7 +31,6 @@
     </div>
 
     {{ page_data.room_name|json_script:"room-name"}}
-    {{ page_data.chat_user.username|json_script:"chat_user" }}
     {{ request.user.username|json_script:"user" }}
-
+    {{ chat_messages|json_script:"messages" }}
 {% endblock content %}

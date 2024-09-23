@@ -1,14 +1,22 @@
-import uuid
+import json
+import uuid, logging
 from django.contrib.auth.models import User
+from django.contrib.messages.storage.cookie import MessageSerializer
 from django.shortcuts import render, redirect, get_object_or_404
 from chat.forms import *
 from django.contrib.auth import login, authenticate, logout
 from chat.forms import RegistrationForm
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import Profile, ChatRoom, UserChatRoom
+from .models import Profile, ChatRoom, UserChatRoom, Message
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from random_word import RandomWords
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+logger = logging.getLogger(__name__)
+
 
 # Create your views here.
 
@@ -74,7 +82,6 @@ def log_out(request):
     logout(request)
     return redirect('login')
 
-
 def room(request, room_name):
     chat_user = User.objects.get(
         id=Profile.objects.get(
@@ -82,6 +89,7 @@ def room(request, room_name):
         ).user_id
     )
     chat_room = get_or_create_room(request.user, chat_user)
+    messages = get_message_history(chat_room)
 
     payload = {
         "page_data": {
@@ -91,13 +99,33 @@ def room(request, room_name):
             },
             "chat_user": chat_user,
             "room_name": chat_room.uuid_redacted,
-        }
+        },
+        "room": {"name": chat_user.username},
+        "chat_messages": messages,
     }
     # return JsonResponse(context)
     return render(request, template_name='chat/room.html', context=payload)
 
+def get_message_history(room):
+    chat_messages = Message.objects.filter(
+        chat_room_id=room.id
+    ).order_by('timestamp')
+
+    messages = {}
+    for m in chat_messages:
+        if m.id not in messages:
+            messages.update({
+                m.id: {
+                    'username': get_object_or_404(User, id=m.sender_id).username,
+                    'message': m.content,
+                    'time': m.timestamp.strftime('%d.%m.%Y %H:%M:%S')
+                }
+            })
+    return messages
+
 def group_chat(request, group_uuid):
     room = ChatRoom.objects.get(uuid=group_uuid)
+    messages = get_message_history(room)
 
     payload = {
         "page_data": {
@@ -108,7 +136,8 @@ def group_chat(request, group_uuid):
             "chat_user": None,
             "room_name": room.uuid_redacted
         },
-        "room": room
+        "room": room,
+        "chat_messages": messages,
     }
     return render(request, 'chat/room.html', context=payload)
 
@@ -206,5 +235,49 @@ def delete_room(request, room_uuid):
         room = get_object_or_404(ChatRoom, uuid=room_uuid)
         room.delete()
     return redirect('manage_rooms')
+
+
+def send_message(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        content = data.get('content')
+        sender = data.get('sender')
+        room = data.get('room')
+
+        room_obj = get_object_or_404(ChatRoom, uuid_redacted=room)
+        sender_obj = get_object_or_404(User, username=sender)
+
+        message = Message.objects.create(
+            sender=sender_obj,
+            content=content,
+            chat_room=room_obj
+        )
+
+        return JsonResponse({
+            'status': 'Message sent!',
+            'message': message.id
+        })
+    return JsonResponse({
+        'error': 'Invalid request'}, status=400
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

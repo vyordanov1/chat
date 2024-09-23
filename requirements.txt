@@ -20,4 +20,5 @@ channels
 daphne
 django_browser_reload
 random-word
+django_rest_framework
 
