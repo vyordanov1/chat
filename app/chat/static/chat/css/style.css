@@ -88,8 +88,8 @@ tr:nth-child(even) {
 }
 
 .chat-container {
-    min-width: 40vw;
-    max-width: 60vw;
+    min-width: 65vw;
+    max-width: 80vw;
     margin: 0 auto;
     padding: 10px;
 }
