@@ -56,7 +56,12 @@ class RegistrationForm(UserCreationForm):
         )
 
     username = forms.CharField(max_length=25)
-    email = forms.EmailField(required=True, max_length=254)
+    email = forms.EmailField(required=True, max_length=254, widget=
+                             forms.EmailInput(
+                                 attrs={
+                                     'type': 'text'
+                                 }
+                             ))
 
     class Meta:
         model = User

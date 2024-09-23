@@ -43,3 +43,17 @@ class UserChatRoom(models.Model):
 
     class Meta:
         unique_together = (('user', 'chat_room'),)
+
+
+
+class Admins(models.Model):
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE,
+        unique=True,
+        related_name='admins',
+    )
+    is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username

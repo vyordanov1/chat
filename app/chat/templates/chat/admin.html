@@ -1,0 +1,25 @@
+{% extends 'chat/main.html' %}
+{% load static %}
+{% block chat_container %}
+{% load custom_filters %}
+    <div class="content">
+        <div class="row">
+            <div class="col">
+                <a href="">
+                    <div class="admin-card">
+                        <i class="fa-solid fa-user icon"></i><br>
+                        Manage users
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="">
+                    <div class="admin-card">
+                        <i class="fa-solid fa-door-open icon"></i><br>
+                        Manage Chat Rooms
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock chat_container %}

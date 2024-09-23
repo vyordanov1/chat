@@ -3,6 +3,7 @@ from .views import *
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
+    path('admin/', admin_page, name='admin'),
     path('members/', index, name='index'),
     path('login/', LoginView.as_view(
         template_name='chat/login.html'), name='login'),

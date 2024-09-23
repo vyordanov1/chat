@@ -1,0 +1,35 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+{% block content %}
+<div class="chat-container">
+        <div class="chat-header">
+            <h1> {{ page_data.header }}
+                <i class="fas fa-comment"></i>
+            </h1>
+        </div>
+    <div class="chat-logout">
+        {% if request.user.is_authenticated %}
+            <div style="float: left; font-weight: bold; color: #036358">
+                {{ user.username }}
+            </div>
+            <div style="float: right;">
+            {% if user.admins.is_admin %}
+                <a href="{% url 'admin' %}">
+                    <i class="fa-solid fa-gear"></i>
+                    Admin
+                </a>
+            {% endif %}
+                <a href="{% url page_data.leave_btn.url %}">
+                    {{ page_data.leave_btn.name }}
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+            <div style="clear: both;"></div>
+        {% endif %}
+    </div>
+    <div class="chat__members__container" id="id_chat_members_container">
+        {% block chat_container %} {% endblock chat_container %}
+    </div>
+</div>
+
+{% endblock content %}
