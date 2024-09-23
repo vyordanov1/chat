@@ -1,8 +1,14 @@
+function getCSRFToken() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    return csrfToken;
+}
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
-const chatUser = JSON.parse(document.getElementById('chat_user').textContent);
 const username = JSON.parse(document.getElementById('user').textContent);
+const messages = JSON.parse(document.getElementById('messages').textContent);
+const csrfToken = getCSRFToken();
 let currentTime = new Date();
 let time = currentTime.toLocaleTimeString();
+let location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
@@ -11,8 +17,7 @@ const chatSocket = new WebSocket(
     + '/'
 );
 
-chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
+function addMessage(data) {
     let messageContainer = document.querySelector("#chat__message__container");
     let div = document.createElement("div");
     div.className = (data.username === username) ? "chat-message left" : "chat-message right";
@@ -26,6 +31,38 @@ chatSocket.onmessage = function(e) {
         messageContainer.appendChild(div);
         // Scroll to the bottom of the chat container
         messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+}
+
+for (const [key, value] of Object.entries(messages)) {
+    addMessage(value);
+}
+
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    addMessage(data);
+    if (data.message != '') {
+        if (data.username === username) {
+            fetch(location + '/chat/api/send-message/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    sender: data.username,
+                    content: data.message,
+                    room: roomName,
+                })
+            })
+                .then(data => {
+                    console.log('Message sent!');
+                })
+                .catch(error => {
+                    console.log(error.message);
+                });
+        }
     }
 };
 

@@ -65,3 +65,20 @@ class Admins(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+    )
+    chat_room = models.ForeignKey(
+        to=ChatRoom,
+        on_delete=models.CASCADE,
+        related_name='messages',
+    )
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender.username}: {self.timestamp}"

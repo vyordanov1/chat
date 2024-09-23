@@ -14,5 +14,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('<str:room_name>/', room, name='room'),
     path('group/<str:group_uuid>/', group_chat, name='group_chat'),
+    path('api/send-message/', send_message, name='send_message'),
     path('', index, name='none'),
 ]

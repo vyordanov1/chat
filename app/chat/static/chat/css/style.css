@@ -119,6 +119,9 @@ tr:nth-child(even) {
     min-height: 300px;
     height: fit-content;
     max-height: 75vh;
+    /*min-width: 65vw;*/
+    /*width: 60vw;*/
+    /*max-width: 80vw;*/
     /* Set a maximum height for the chat container */
     overflow-y: auto;
     /* Add a vertical scrollbar when needed */
