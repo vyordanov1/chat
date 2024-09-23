@@ -195,6 +195,7 @@ def create_room(request):
     r = RandomWords()
     room = ChatRoom.objects.create()
     room.uuid_redacted = str(room.uuid).replace('-', '')
+    room.is_public = True
     room.name = r.get_random_word()
     room.save()
     return redirect('manage_rooms')

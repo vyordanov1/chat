@@ -33,6 +33,9 @@ class ChatRoom(models.Model):
         blank=True,
         max_length=255,
     )
+    is_public = models.BooleanField(
+        default=False
+    )
 
 
 class UserChatRoom(models.Model):
