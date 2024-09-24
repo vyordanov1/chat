@@ -22,20 +22,20 @@ logger = logging.getLogger(__name__)
 
 def index(request):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect("login")
     logged_in_users = get_active_users()
     rooms = ChatRoom.objects.all()
     payload = {
-        'users': User.objects.all().exclude(
+        "users": User.objects.all().exclude(
             username=request.user.username,
         ),
-        'logged_in_users': logged_in_users,
+        "logged_in_users": logged_in_users,
         "page_data": {
-            'leave_btn': {
-                'url': 'logout',
-                'name': 'Logout'
+            "leave_btn": {
+                "url": "logout",
+                "name": "Logout"
             },
-            'header': 'Chat members',
+            "header": "Chat members",
         },
         "rooms": rooms
     }
@@ -185,7 +185,8 @@ def admin_page(request):
                 'url': 'index',
                 'name': 'Return'
             },
-            "manage_rooms": 'manage_rooms'
+            "manage_rooms": 'manage_rooms',
+            "manage_users": 'manage_users',
         },
     }
     return render(request, 'chat/admin/admin.html', context=payload)
@@ -218,6 +219,28 @@ def manage_rooms(request):
         "rooms": rooms
     }
     return render(request, 'chat/admin/manage_rooms.html', context=payload)
+
+
+def manage_users(request):
+    users = User.objects.all()
+    payload = {
+        "page_data": {
+            "header": "Existing Chat Users",
+            "leave_btn": {
+                "url": "admin",
+                "name": "Return"
+            }
+        },
+        "users": users
+    }
+    return render(request, "chat/admin/manage_users.html", context=payload)
+
+
+def delete_user(request, user_id):
+    if request.method == "GET":
+        user = get_object_or_404(User, id=user_id)
+        user.delete()
+    return redirect("manage_users")
 
 
 def create_room(request):

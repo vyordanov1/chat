@@ -7,7 +7,6 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 5vh;
-    /*justify-content: center;*/
     align-items: center;
     height: 100vh;
     width: 100vw;
@@ -20,7 +19,6 @@ form {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* text-align: center; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,7 +28,7 @@ form {
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: bold;
-    color: #128C7E;
+    color: rgba(0, 121, 121, 0.71);
     /* ChitChat brand color */
 }
 
@@ -40,11 +38,11 @@ form {
 
 .reg-form {
     padding-top: 1vh;
-    color: #128C7E;
+    color: rgba(0, 121, 121, 0.71);
 }
 
 button {
-    background-color: #128C7E;
+    background-color: rgba(0, 121, 121, 0.71);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -53,7 +51,7 @@ button {
 }
 
 button:hover {
-    background-color: #075e54;
+    background-color: rgba(0, 121, 121, 0.71);
 }
 
 label {
@@ -96,7 +94,7 @@ tr:nth-child(even) {
 .chat-header {
     font-size: 24px;
     text-align: center;
-    background-color: #075e54;
+    background-color: rgba(0, 121, 121, 0.71);
     color: #fff;
     padding: 10px;
     border-top-left-radius: 10px;
@@ -137,7 +135,7 @@ tr:nth-child(even) {
     height: 5vh;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    color: #036358;
+    color: rgba(0, 121, 121, 0.71);
 }
 
 .start-chat {
@@ -166,7 +164,7 @@ tr:nth-child(even) {
 }
 
 .chat-message.right {
-    background-color: #373737;
+    background-color: rgba(58, 58, 58, 0.78);
     width: 80%;
     float: right;
     clear: both;
@@ -175,7 +173,7 @@ tr:nth-child(even) {
 }
 
 .chat-message.left {
-    background-color: #075e54;
+    background-color: rgba(0, 121, 121, 0.71);
     width: 80%;
     float: left;
     clear: both;
@@ -213,16 +211,16 @@ tr:nth-child(even) {
     padding: 1em;
     border: 1px solid #ccc;
     border-radius: 15px;
-    color: #075e54;
+    color: rgba(0, 121, 121, 0.71);
 }
 
 .admin-card:hover {
-    background-color: rgba(3, 99, 88, 0.32);
+    background-color: rgba(0, 121, 121, 0.14);
 }
 
 .admin-card .icon {
     font-size: 3em;
-    color: #036358;
+    color: rgba(0, 121, 121, 0.71);
 }
 
 #username-input input {
@@ -265,6 +263,12 @@ tr:nth-child(even) {
     text-indent: 20px;
 }
 
+.auth-user-icon {
+    float: right;
+    font-weight: bold;
+    color: rgba(0, 121, 121, 0.71);
+}
+
 @media (max-width: 450px) {
     .chat-container {
         width: 100%;
@@ -286,11 +290,15 @@ tr:nth-child(even) {
         width: 100%;
     }
     #chat-message-input {
-        width: 100%;
+        margin-left: 2%;
+        width: 80%;
     }
     #chat-message-submit {
-        width: 100%;
-        border-radius: 0px;
+        width: 15%;
+        border-radius: 4px;
+    }
+    .button-text {
+        display: none;
     }
     .chat-header {
         border-top-left-radius: 0px;

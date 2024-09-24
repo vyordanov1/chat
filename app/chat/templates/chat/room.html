@@ -9,13 +9,13 @@
             </h1>
         </div>
         <div class="chat-leave">
-            <div style="float: left; font-weight: bold; color: #036358">
+            <div class="auth-user-icon">
                 <i class="fa-solid fa-user"></i>
                 {{ user.username }}
             </div>
-            <div style="float: right;">
+            <div style="float: left; padding-right: 1vw;">
                 <a href="{% url 'index' %}">
-                    <i class="fas fa-sign-out-alt"></i>
+                    <i class="fa-solid fa-chevron-left"></i>
                     Leave Chat
                 </a>
             </div>
@@ -26,7 +26,12 @@
         </div>
         <div class="chat-input-container">
             <input type="text" id="chat-message-input" placeholder="Type your message..." />
-            <button type="submit" id="chat-message-submit"><i class="fas fa-paper-plane"></i> Send</button>
+            <button type="submit" id="chat-message-submit">
+                <i class="fas fa-paper-plane"></i>
+                <span class="button-text">
+                    Send
+                </span>
+            </button>
         </div>
     </div>
 
