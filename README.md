@@ -6,11 +6,12 @@ Simple chat app built on Django framework utilizing the use of django channels a
 
 This project requires [Docker](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/) as well as [Docker compose](https://docs.docker.com/compose/) to run
 
-### Create your .env file with the following content and enter your credentials
+### Create your .env file with the following content and enter your credentials and django secret key
 ```
 ALLOWED_HOSTS='127.0.0.1,localhost'
 DOMAIN='127.0.0.1'
 DOMAIN_URL='http://127.0.0.1'
+SECRET_KEY=''
 STATIC_ROOT='static'
 STATIC_URL='/static/'
 PSQL_ROOT_PASSWORD=''
