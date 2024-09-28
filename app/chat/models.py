@@ -30,7 +30,7 @@ class ChatRoom(models.Model):
     )
     name = models.CharField(
         blank=True,
-        max_length=255,
+        max_length=254,
     )
     is_public = models.BooleanField(
         default=False
