@@ -7,7 +7,7 @@ from chat.forms import *
 from django.contrib.auth import login, authenticate, logout
 from chat.forms import RegistrationForm
 from django.http import HttpResponseRedirect, JsonResponse
-from .forms import ProfileForm, ThemeForm
+from .forms import ProfileForm, ThemeForm, SearchForm
 from .models import Profile, ChatRoom, UserChatRoom, Message, Themes
 from django.contrib.sessions.models import Session
 from django.utils import timezone
@@ -196,7 +196,13 @@ def admin_page(request):
 
 def manage_rooms(request):
     chat_rooms = ChatRoom.objects.all()
+    form = SearchForm(request.POST or None)
     rooms = []
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        if query:
+            chat_rooms = chat_rooms.filter(name__icontains=query)
+
     for r in chat_rooms:
         if r.uuid not in rooms:
             rooms.append(
@@ -218,13 +224,21 @@ def manage_rooms(request):
                 "name": "Return"
             }
         },
-        "rooms": rooms
+        "rooms": rooms,
+        "form": form,
     }
     return render(request, 'chat/admin/manage_rooms.html', context=payload)
 
 
 def manage_users(request):
     users = User.objects.all()
+    form = SearchForm(request.POST or None)
+
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        if query:
+            users = users.filter(username__icontains=query)
+
     payload = {
         "page_data": {
             "header": "Existing Chat Users",
@@ -233,7 +247,8 @@ def manage_users(request):
                 "name": "Return"
             }
         },
-        "users": users
+        "users": users,
+        "form": form,
     }
     return render(request, "chat/admin/manage_users.html", context=payload)
 

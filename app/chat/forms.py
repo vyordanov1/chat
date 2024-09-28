@@ -110,3 +110,16 @@ class ThemeForm(forms.ModelForm):
     class Meta:
         model = Themes
         fields = ('name',)
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=254,
+        label='',
+        required=False,
+        widget=forms.TextInput(
+            attrs= {
+                "placeholder": "Search",
+            }
+        )
+    )
