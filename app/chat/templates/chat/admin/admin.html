@@ -6,10 +6,10 @@
     <div class="content">
         <div class="row">
             <div class="col">
-                <a href="">
+                <a href="{% url page_data.manage_users %}">
                     <div class="admin-card">
                         <i class="fa-solid fa-user icon"></i><br>
-                        Manage users
+                        Users
                     </div>
                 </a>
             </div>
@@ -17,7 +17,15 @@
                 <a href="{% url page_data.manage_rooms %}">
                     <div class="admin-card">
                         <i class="fa-solid fa-door-open icon"></i><br>
-                        Manage Chat Rooms
+                        Chat Rooms
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{% url page_data.manage_themes %}">
+                    <div class="admin-card">
+                        <i class="fa-solid fa-palette icon"></i><br>
+                        Themes
                     </div>
                 </a>
             </div>

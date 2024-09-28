@@ -9,20 +9,11 @@
         </div>
     <div class="chat-logout">
         {% if request.user.is_authenticated %}
-            <div style="float: left; font-weight: bold; color: #036358">
-                <i class="fa-solid fa-user"></i>
-                {{ user.username }}
-            </div>
-            <div style="float: right;">
-            {% if user.admins.is_admin %}
-                <a href="{% url 'admin' %}">
-                    <i class="fa-solid fa-gear"></i>
-                    Admin
-                </a>
-            {% endif %}
+            {% include 'chat/user_profile.html' %}
+            <div style="float: left;">
                 <a href="{% url page_data.leave_btn.url %}">
+                    <i class="fa-solid fa-chevron-left"></i>
                     {{ page_data.leave_btn.name }}
-                    <i class="fas fa-sign-out-alt"></i>
                 </a>
             </div>
             <div style="clear: both;"></div>

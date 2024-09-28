@@ -1,0 +1,40 @@
+{% extends 'chat/main.html' %}
+{% load static %}
+{% block chat_container %}
+    {% include 'chat/search-bar.html' %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Admin</th>
+            <th>Last Login</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                {% if u.admins.is_admin %}
+                    <td>{{ u.admins.is_admin }}</td>
+                {% else %}
+                    <td>False</td>
+                {% endif %}
+                <td>{{ u.last_login }}</td>
+                <td>
+                    <a href="">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete_user' u.id %}">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock chat_container %}

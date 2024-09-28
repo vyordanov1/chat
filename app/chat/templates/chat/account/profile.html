@@ -1,0 +1,22 @@
+{% extends "chat/account/account.html" %}
+{% load static %}
+{% block account_content %}
+
+    <form method="POST" action="{% url 'account' %}">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="first_name">First Name:</label>
+                {{ form.first_name }}
+            </div>
+            <div class="col-md-6">
+                <label for="last_name">Last Name:</label>
+                {{ form.last_name }}
+            </div>
+            <button class="save-btn">
+                    Save
+            </button>
+        </div>
+    </form>
+
+{% endblock account_content %}

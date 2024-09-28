@@ -1,0 +1,32 @@
+{% extends 'chat/main.html' %}
+{% load static %}
+{% block chat_container %}
+<div class="container">
+    <table style="margin-bottom: 5vh">
+        <tr>
+            <th>Name</th>
+            <th>Delete</th>
+        </tr>
+        {% for theme in themes %}
+            <tr>
+                <td>{{ theme.name }}</td>
+                <td>
+                    <a href="{% url 'delete_theme' theme.id %}">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form method="POST" action="{% url 'manage_themes' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="name">Create theme:</label>
+                {{ form.name }}
+            </div>
+        </div>
+        <button class="save-btn">Create</button>
+    </form>
+</div>
+{% endblock chat_container %}

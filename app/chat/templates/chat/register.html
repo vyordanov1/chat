@@ -1,8 +1,8 @@
 {% extends "chat/base.html" %}
 {% load static %}
 {% block content %}
-    <h2>Sign up</h2>
-    <form method="POST" class="login-form" id="login-form">
+    <form  method="POST" class="register-form" id="login-form">
+    <h2>Sign up</h2><br>
     {% csrf_token %}
         <div id="username-input">
             <i class="fa-solid fa-user icon"></i>

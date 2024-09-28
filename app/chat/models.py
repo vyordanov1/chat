@@ -2,7 +2,6 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Profile(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE)
@@ -36,6 +35,9 @@ class ChatRoom(models.Model):
     is_public = models.BooleanField(
         default=False
     )
+
+    def __str__(self):
+        return self.name
 
 
 class UserChatRoom(models.Model):
@@ -82,3 +84,14 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.sender.username}: {self.timestamp}"
+
+
+class Themes(models.Model):
+    name = models.CharField(
+        max_length=25,
+        blank=False,
+        null=False,
+    )
+
+    def __str__(self):
+        return self.name
