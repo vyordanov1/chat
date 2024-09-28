@@ -1,0 +1,37 @@
+{% extends 'chat/main.html' %}
+{% load static %}
+{% block chat_container %}
+            <div class="col-md-12 flex-grow-1 pt-2" id="content">
+            <div class="row">
+                <div class="col-12 col-md-3 border-right mx-2">
+                    <div class="d-flex flex-column align-items-center py-4">
+                        <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=00A3BF&color=182A4D"
+                                    alt="{{ user.username }}" style="width: 60%; border-radius: 50%;"><br>
+                    </div>
+                    <div class="d-flex flex-column align-items-start text-center p-3">
+                        <span class="account_card_title">Name: {{ user.first_name }} {{ user.last_name }}</span>
+                        <span class="account_card_title">Email: {{ user.email }}</span>
+                        <span class="account_card_title">Username: {{ user.username }}</span>
+                        <span class="account_card_title">Is Admin: {{ user.admins.is_admin }}</span><br>
+                        </span><br>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="p-3 py-5">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col" style="text-align: center">
+                                    <a href="{% url 'account' %}">Profile</a>
+                                </div>
+                                <div class="col">
+                                    <a href="{% url 'select_theme' %}">Themes</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        {% block account_content %} {% endblock account_content %}
+                    </div>
+                </div>
+            </div>
+{% endblock chat_container %}

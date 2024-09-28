@@ -8,11 +8,8 @@
                 <i class="fas fa-comment"></i>
             </h1>
         </div>
-        <div class="chat-leave">
-            <div class="auth-user-icon">
-                <i class="fa-solid fa-user"></i>
-                {{ user.username }}
-            </div>
+        <div class="chat-logout">
+            {% include 'chat/user_profile.html' %}
             <div style="float: left; padding-right: 1vw;">
                 <a href="{% url 'index' %}">
                     <i class="fa-solid fa-chevron-left"></i>

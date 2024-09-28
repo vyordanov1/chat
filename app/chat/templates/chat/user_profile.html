@@ -1,0 +1,21 @@
+<div class="dropdown auth-user-icon">
+    <i class="fa-solid fa-user"></i>
+    {{ user.username }}
+    <i class="fa-solid fa-angle-down"></i>
+    <div class="dropdown-content">
+        <a href="{% url 'account' %}">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+        {% if user.admins.is_admin %}
+        <a href="{% url 'admin' %}">
+            <i class="fa-solid fa-gear"></i>
+            Admin
+        </a>
+        {% endif %}
+        <a href="{% url 'logout' %}">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+  </div>
+</div>

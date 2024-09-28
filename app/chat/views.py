@@ -7,7 +7,8 @@ from chat.forms import *
 from django.contrib.auth import login, authenticate, logout
 from chat.forms import RegistrationForm
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import Profile, ChatRoom, UserChatRoom, Message
+from .forms import ProfileForm, ThemeForm
+from .models import Profile, ChatRoom, UserChatRoom, Message, Themes
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from random_word import RandomWords
@@ -42,7 +43,7 @@ def index(request):
     return render(request, 'chat/members.html', context=payload)
 
 def register(request):
-    form = RegistrationForm(request.POST)
+    form = RegistrationForm(request.POST or None)
     if form.is_valid():
         if User.objects.filter(
             username=form.cleaned_data['username']
@@ -187,6 +188,7 @@ def admin_page(request):
             },
             "manage_rooms": 'manage_rooms',
             "manage_users": 'manage_users',
+            "manage_themes": "manage_themes",
         },
     }
     return render(request, 'chat/admin/admin.html', context=payload)
@@ -250,6 +252,7 @@ def create_room(request):
     room.is_public = True
     room.name = r.get_random_word()
     room.save()
+
     return redirect('manage_rooms')
 
 
@@ -285,20 +288,69 @@ def send_message(request):
     )
 
 
+def account(request):
+    form = ProfileForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        return redirect('account')
+
+    payload = {
+        "page_data": {
+            "header": "Account Page",
+            "leave_btn": {
+                "url": "index",
+                "name": "Return"
+            }
+        },
+        "user": request.user,
+        "form": form
+    }
+    return render(request, 'chat/account/profile.html', context=payload)
+
+
+def select_theme(request):
+    themes = Themes.objects.all()
+    payload = {
+        "page_data": {
+            "header": "Themes",
+            "leave_btn": {
+                "url": "index",
+                "name": "Return"
+            }
+        },
+        "user": request.user,
+        "themes": themes
+    }
+    return render(request, 'chat/account/themes.html', context=payload)
 
 
 
+def manage_themes(request):
+    form = ThemeForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('manage_themes')
+    themes = Themes.objects.all()
+    payload = {
+        "page_data": {
+            "header": "Themes",
+            "leave_btn": {
+                "url": "admin",
+                "name": "Return"
+            },
+        },
+        "user": request.user,
+        "themes": themes,
+        "form": form
+    }
+    return render(request, 'chat/admin/themes.html', context=payload)
 
 
-
-
-
-
-
-
-
-
-
+def delete_theme(request, theme_id):
+    if request.method == "GET":
+        theme = get_object_or_404(Themes, id=theme_id)
+        theme.delete()
+    return redirect('manage_themes')
 
 
 
