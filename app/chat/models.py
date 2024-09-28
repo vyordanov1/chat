@@ -10,6 +10,12 @@ class Profile(models.Model):
         editable=False,
         unique=True)
 
+    theme_preference = models.ForeignKey(
+        to="Themes",
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
     def __str__(self):
         return f'{self.user.username}'
 
@@ -91,6 +97,7 @@ class Themes(models.Model):
         max_length=25,
         blank=False,
         null=False,
+        default='light',
     )
 
     def __str__(self):

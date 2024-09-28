@@ -1,6 +1,6 @@
-{% extends 'chat/main.html' %}
+{% extends 'chat/account/account.html' %}
 {% load static %}
-{% block chat_container %}
+{% block account_content %}
     {% include 'chat/search-bar.html' %}
     <table>
         <tr>
@@ -37,4 +37,4 @@
         {% endfor %}
     </table>
 
-{% endblock chat_container %}
+{% endblock account_content %}

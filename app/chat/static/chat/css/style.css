@@ -92,8 +92,11 @@ tr:nth-child(even) {
     padding: 10px;
 }
 .chat-header {
+    display: flex;
     font-size: 24px;
+    justify-content: center;
     text-align: center;
+    position: relative;
     background-color: rgba(0, 121, 121, 0.71);
     color: #fff;
     padding: 10px;
@@ -103,6 +106,11 @@ tr:nth-child(even) {
 
 .chat-header h1 {
     font-size: 24px;
+    flex-grow: 1; /* Let h1 take as much space as possible */
+}
+
+.chat-header a {
+    color: #fff;
 }
 
 .chat-logout {

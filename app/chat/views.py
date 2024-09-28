@@ -178,22 +178,6 @@ def get_active_users():
     return logged_in_users
 
 
-def admin_page(request):
-    payload = {
-        "page_data": {
-            'header': 'Chat Admin Page',
-            'leave_btn': {
-                'url': 'index',
-                'name': 'Return'
-            },
-            "manage_rooms": 'manage_rooms',
-            "manage_users": 'manage_users',
-            "manage_themes": "manage_themes",
-        },
-    }
-    return render(request, 'chat/admin/admin.html', context=payload)
-
-
 def manage_rooms(request):
     chat_rooms = ChatRoom.objects.all()
     form = SearchForm(request.POST or None)
@@ -220,7 +204,7 @@ def manage_rooms(request):
         "page_data": {
             "header": "Existing Chat Rooms",
             "leave_btn": {
-                "url": "admin",
+                "url": "account",
                 "name": "Return"
             }
         },
@@ -243,7 +227,7 @@ def manage_users(request):
         "page_data": {
             "header": "Existing Chat Users",
             "leave_btn": {
-                "url": "admin",
+                "url": "account",
                 "name": "Return"
             }
         },
@@ -325,6 +309,14 @@ def account(request):
 
 def select_theme(request):
     themes = Themes.objects.all()
+    if request.method == 'POST':
+        theme_id = request.POST.get('theme')
+        theme = Themes.objects.get(id=theme_id)
+        user = request.user
+        user.profile.theme_preference = theme
+        user.save()
+        return redirect('select_theme')
+
     payload = {
         "page_data": {
             "header": "Themes",
@@ -334,7 +326,7 @@ def select_theme(request):
             }
         },
         "user": request.user,
-        "themes": themes
+        "themes": themes,
     }
     return render(request, 'chat/account/themes.html', context=payload)
 
@@ -350,7 +342,7 @@ def manage_themes(request):
         "page_data": {
             "header": "Themes",
             "leave_btn": {
-                "url": "admin",
+                "url": "account",
                 "name": "Return"
             },
         },
@@ -363,10 +355,18 @@ def manage_themes(request):
 
 def delete_theme(request, theme_id):
     if request.method == "GET":
-        theme = get_object_or_404(Themes, id=theme_id)
+        theme = get_object_or_404(Themes, pk=theme_id)
         theme.delete()
     return redirect('manage_themes')
 
+
+# def change_theme(request, theme_id):
+#     user = request.user
+#     if request.method == "GET":
+#         theme = get_object_or_404(Themes, pk=theme_id)
+#         user.theme_preference = theme
+#         user.save()
+#         return redirect('select_theme')
 
 
 
