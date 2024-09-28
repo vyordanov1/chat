@@ -1,6 +1,6 @@
-{% extends 'chat/main.html' %}
+{% extends 'chat/account/account.html' %}
 {% load static %}
-{% block chat_container %}
+{% block account_content %}
     <div class="container">
     <a href="{% url 'create_room' %}">
         <i class="fa-solid fa-plus"></i>
@@ -28,4 +28,4 @@
         {% endfor %}
     </table>
     </div>
-{% endblock chat_container %}
+{% endblock account_content %}

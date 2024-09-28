@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <a href="{% url 'account' %}">Profile</a>
+        </div>
+        <div class="col">
+            <a href="{% url 'select_theme' %}">Theme</a>
+        </div>
+        {% if user.admins.is_admin %}
+        <div class="col">
+            <a href="{% url 'manage_users' %}">Users</a>
+        </div>
+        <div class="col">
+            <a href="{% url 'manage_rooms' %}">Chat Rooms</a>
+        </div>
+        <div class="col">
+            <a href="{% url 'manage_themes' %}">Themes</a>
+        </div>
+        {% endif %}
+    </div>
+</div>

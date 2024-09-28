@@ -19,16 +19,7 @@
 
                 <div class="col-md-8">
                     <div class="p-3 py-5">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col" style="text-align: center">
-                                    <a href="{% url 'account' %}">Profile</a>
-                                </div>
-                                <div class="col">
-                                    <a href="{% url 'select_theme' %}">Themes</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'chat/account/navigation.html' %}
                         <hr>
                         {% block account_content %} {% endblock account_content %}
                     </div>
