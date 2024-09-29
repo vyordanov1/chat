@@ -20,6 +20,7 @@
             <i class="fa-solid fa-lock icon"></i>
             {{form.password2}}
         </div>
+        {{ form.errors }}
         <button type="submit">Sign up</button>
     <a href="{% url 'login' %}" class="reg-form">Back</a>
     </form>

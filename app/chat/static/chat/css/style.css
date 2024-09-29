@@ -317,6 +317,13 @@ tr:nth-child(even) {
     margin-left: 10px;
 }
 
+.login-urls{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
 
 
 @media (max-width: 450px) {

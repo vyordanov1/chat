@@ -2,13 +2,16 @@
 {% load static %}
 {% block content %}
      <form method="post" class="login-form">
-                {% csrf_token %}
-                <div class="branding">VB-Chat</div>
-                <input type="hidden" name="next" value="{% url 'index' %}">
-                {{form.as_p}}
-                <div class="btn-container">
-                    <button type="submit">Login</button>
-                </div>
-                <a class="reg-form" href="{% url 'register' %}">Register</a>
+        {% csrf_token %}
+        <div class="branding">VB-Chat</div>
+        <input type="hidden" name="next" value="{% url 'index' %}">
+        {{form.as_p}}
+        <div class="btn-container">
+            <button type="submit">Login</button>
+        </div><br>
+         <div class="login-urls">
+            <a class="reg-form" href="{% url 'register' %}">Register</a>
+            <a class="reg-form" href="{% url 'password_reset' %}">Forgot password?</a>
+         </div>
             </form>
 {% endblock content %}

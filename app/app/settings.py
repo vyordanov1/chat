@@ -167,3 +167,4 @@ COMPRESS_PRECOMPILERS = (
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# AUTH_USER_MODEL = 'chat.ChatUser'

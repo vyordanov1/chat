@@ -1,7 +1,6 @@
 {% extends "chat/account/account.html" %}
 {% load static %}
 {% block account_content %}
-
     <form method="POST" action="{% url 'account' %}">
     {% csrf_token %}
         <div class="row">
@@ -13,9 +12,10 @@
                 <label for="last_name">Last Name:</label>
                 {{ form.last_name }}
             </div>
-            <button class="save-btn">
-                    Save
-            </button>
+            <div class="profile-buttons">
+                <a class="reg-form" href="{% url 'user_password_change' user.id %}">Change password</a>
+                <button class="save-btn">Save</button>
+            </div>
         </div>
     </form>
 
