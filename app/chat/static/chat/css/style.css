@@ -324,6 +324,14 @@ tr:nth-child(even) {
     justify-content: space-around;
 }
 
+.profile-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+    gap: 5%;
+}
+
 
 
 @media (max-width: 450px) {
