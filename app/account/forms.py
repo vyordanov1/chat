@@ -29,7 +29,6 @@ class ProfileForm(forms.ModelForm):
         fields = ('first_name', 'last_name')
 
 
-
 class ThemeForm(forms.ModelForm):
     name = forms.CharField(
         max_length=25,

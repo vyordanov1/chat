@@ -1,7 +1,12 @@
+import uuid
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import PasswordReset
+import logging
+
+logger = logging.getLogger(__name__)
 
 class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -116,7 +121,6 @@ class PasswordResetForm(forms.Form):
         return cleaned_data
 
 
-
 class PasswordChangeForm(forms.Form):
     password1 = forms.CharField(
         label='Enter Password',
@@ -154,9 +158,6 @@ class PasswordChangeForm(forms.Form):
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
 
-        if password1 and password2 and password1 == password2:
-            return cleaned_data
-        raise forms.ValidationError(
-            "Passwords don't match."
-        )
-
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match.")
+        return cleaned_data

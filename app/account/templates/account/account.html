@@ -12,7 +12,7 @@
                         <span class="account_card_title">Name: {{ user.first_name }} {{ user.last_name }}</span>
                         <span class="account_card_title">Email: {{ user.email }}</span>
                         <span class="account_card_title">Username: {{ user.username }}</span>
-                        <span class="account_card_title">Is Admin: {{ user.admins.is_admin }}</span><br>
+                        <span class="account_card_title">Role: {% if user.admins.is_admin %}admin{% else %}user{% endif %}</span><br>
                         </span><br>
                     </div>
                 </div>
