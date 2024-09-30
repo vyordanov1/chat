@@ -9,6 +9,4 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('password-reset/', password_reset, name='password_reset'),
     path('password-change/<uuid:uuid>/', password_change, name='password_change'),
-    path('user-password-change/<int:user_id>/', user_password_change, name='user_password_change'),
-
 ]

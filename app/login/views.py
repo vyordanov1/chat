@@ -122,7 +122,7 @@ def user_password_change(request, user_id):
         "user": request.user,
         "form": form
     }
-    return render(request,'chat/account/password_change.html', context=payload)
+    return render(request,'account/password_change.html', context=payload)
 
 
 def generate_password_reset_request(user_id):
