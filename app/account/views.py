@@ -132,7 +132,7 @@ def select_theme(request):
         theme = Themes.objects.get(id=theme_id)
         user = request.user
         user.profile.theme_preference = theme
-        user.save()
+        user.profile.save()
         return redirect('select_theme')
 
     payload = {
