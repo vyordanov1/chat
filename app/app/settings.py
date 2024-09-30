@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'daphne',
     'chat',
+    'login',
+    'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,3 +169,4 @@ COMPRESS_PRECOMPILERS = (
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# AUTH_USER_MODEL = 'chat.ChatUser'

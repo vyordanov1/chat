@@ -1,23 +1,25 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from account.models import Profile, Themes
+User._meta.get_field('email')._unique = True
 
-class Profile(models.Model):
-    user = models.OneToOneField(User,
-                                on_delete=models.CASCADE)
-    uuid = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True)
-
-    theme_preference = models.ForeignKey(
-        to="Themes",
-        null=True,
-        on_delete=models.SET_NULL,
-    )
-
-    def __str__(self):
-        return f'{self.user.username}'
+# class Profile(models.Model):
+#     user = models.OneToOneField(User,
+#                                 on_delete=models.CASCADE)
+#     uuid = models.UUIDField(
+#         default=uuid.uuid4,
+#         editable=False,
+#         unique=True)
+#
+#     theme_preference = models.ForeignKey(
+#         to="Themes",
+#         null=True,
+#         on_delete=models.SET_NULL,
+#     )
+#
+#     def __str__(self):
+#         return f'{self.user.username}'
 
 
 class ChatRoom(models.Model):
@@ -62,17 +64,17 @@ class UserChatRoom(models.Model):
 
 
 
-class Admins(models.Model):
-    user = models.OneToOneField(
-        to=User,
-        on_delete=models.CASCADE,
-        unique=True,
-        related_name='admins',
-    )
-    is_admin = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
+# class Admins(models.Model):
+#     user = models.OneToOneField(
+#         to=User,
+#         on_delete=models.CASCADE,
+#         unique=True,
+#         related_name='admins',
+#     )
+#     is_admin = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return self.user.username
 
 
 class Message(models.Model):
@@ -92,13 +94,33 @@ class Message(models.Model):
         return f"{self.sender.username}: {self.timestamp}"
 
 
-class Themes(models.Model):
-    name = models.CharField(
-        max_length=25,
-        blank=False,
-        null=False,
-        default='light',
-    )
+# class Themes(models.Model):
+#     name = models.CharField(
+#         max_length=25,
+#         blank=False,
+#         null=False,
+#         default='light',
+#     )
+#
+#     def __str__(self):
+#         return self.name
 
-    def __str__(self):
-        return self.name
+
+# class PasswordReset(models.Model):
+#     user = models.ForeignKey(
+#         to=User,
+#         on_delete=models.CASCADE,
+#     )
+#     datetime = models.DateTimeField(auto_now_add=True)
+#     uuid = models.UUIDField(
+#         unique=True,
+#         default=uuid.uuid4(),
+#     )
+#     is_done = models.BooleanField(default=False)
+#
+#     def done(self):
+#         self.is_done = True
+#         self.save()
+#
+#     def __str__(self):
+#         return self.user.username
