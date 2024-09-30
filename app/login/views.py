@@ -17,6 +17,7 @@ from .forms import *
 
 # Create your views here.
 
+logger = logging.getLogger(__name__)
 
 def log_in(request):
     if request.method == 'POST':
@@ -53,7 +54,7 @@ def register(request):
     else:
         form = RegistrationForm()
     payload = {'form': form}
-    return render(request, 'chat/register.html', context=payload)
+    return render(request, 'login/register.html', context=payload)
 
 
 def password_reset(request):
@@ -67,16 +68,19 @@ def password_reset(request):
     else:
         form = PasswordResetForm()
     payload = {'form': form}
-    return render(request, 'chat/password_reset.html', context=payload)
+    return render(request, 'login/password_reset.html', context=payload)
 
 
 def password_change(request, uuid):
     if request.method == 'POST':
         form = PasswordChangeForm(request.POST or None)
         if form.is_valid():
+            user = request.user
             password = form.cleaned_data['password1']
-            reset_request = PasswordReset.objects.get(uuid=uuid)
-            user = reset_request.user
+            reset_request = get_object_or_404(PasswordReset, uuid=uuid)
+            if not reset_request.is_active:
+                form.add_error('password1', 'This URL is no longer active!')
+                return render(request, 'login/password_change.html', {'form': form})
             user.set_password(password)
             user.save()
             reset_request.done()
@@ -87,7 +91,7 @@ def password_change(request, uuid):
             return redirect('index')
         form = PasswordChangeForm()
     payload = {'form': form}
-    return render(request, 'chat/password_change.html', context=payload)
+    return render(request, 'login/password_change.html', context=payload)
 
 
 def user_password_change(request, user_id):
@@ -109,7 +113,7 @@ def user_password_change(request, user_id):
             login(request, user)
             return redirect('account')
 
-    reset_request = generate_password_reset_request(user_id)
+    generate_password_reset_request(user_id)
     form = PasswordChangeForm()
     payload = {
         "page_data": {

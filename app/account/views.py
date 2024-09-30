@@ -57,7 +57,6 @@ def manage_rooms(request):
     return render(request, 'account/admin/manage_rooms.html', context=payload)
 
 
-
 def manage_users(request):
     users = User.objects.all()
     form = SearchForm(request.POST or None)
@@ -106,8 +105,6 @@ def delete_room(request, room_uuid):
     return redirect('manage_rooms')
 
 
-
-
 def account(request):
     form = ProfileForm(request.POST or None, instance=request.user)
     if form.is_valid():
@@ -126,7 +123,6 @@ def account(request):
         "form": form
     }
     return render(request, 'account/profile.html', context=payload)
-
 
 
 def select_theme(request):
@@ -151,7 +147,6 @@ def select_theme(request):
         "themes": themes,
     }
     return render(request, 'account/themes.html', context=payload)
-
 
 
 def manage_themes(request):
