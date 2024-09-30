@@ -13,13 +13,6 @@ urlpatterns = [
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
     path('delete_theme/<int:theme_id>/', delete_theme, name='delete_theme'),
     path('members/', index, name='index'),
-    path('login/', LoginView.as_view(
-        template_name='chat/login.html'), name='login'),
-    path('logout/', log_out, name='logout'),
-    path('register/', register, name='register'),
-    path('password-reset/', password_reset, name='password_reset'),
-    path('password-change/<uuid:uuid>/', password_change, name='password_change'),
-    path('user-password-change/<int:user_id>/', user_password_change, name='user_password_change'),
     path('<str:room_name>/', room, name='room'),
     path('group/<str:group_uuid>/', group_chat, name='group_chat'),
     path('api/send-message/', send_message, name='send_message'),

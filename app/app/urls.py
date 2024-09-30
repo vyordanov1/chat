@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from chat.urls import *
+from login.urls import *
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
-    path('', include('chat.urls')),
     path('chat/', include('chat.urls')),
-
+    path('login/', include('login.urls')),
+    path('', include('chat.urls')),
 ]
