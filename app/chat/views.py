@@ -59,10 +59,12 @@ def room(request, room_name):
                 "url": "index",
                 "name": "Leave Chat"
             },
-            "chat_user": chat_user,
-            "room_name": chat_room.uuid_redacted,
         },
-        "room": {"name": chat_user.username},
+        "chat_user": chat_user,
+        "room_name": chat_room.uuid_redacted,
+        "room": {
+            "name": chat_user.username
+        },
         "chat_messages": messages,
     }
     # return JsonResponse(context)

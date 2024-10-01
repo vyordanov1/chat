@@ -1,5 +1,8 @@
 {% extends "chat/main.html" %}
 {% load static %}
+{% block javascript %}
+    <script type="module" src="{% static 'chat/js/chat.js' %}"></script>
+{% endblock javascript %}
 {% block content %}
 {% load custom_filters %}
     <div class="chat-container">
@@ -32,7 +35,7 @@
         </div>
     </div>
 
-    {{ page_data.room_name|remove_hyphens|json_script:"room-name"}}
+    {{ room_name|remove_hyphens|json_script:"room-name"}}
     {{ request.user.username|json_script:"user" }}
     {{ chat_messages|json_script:"messages" }}
 {% endblock content %}

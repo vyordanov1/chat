@@ -95,3 +95,9 @@ tr:nth-child(even) {
 .dropdown-content a:hover {background-color: #ddd;}
 .dropdown:hover .dropdown-content {display: block;}
 
+.account-navigation div a {
+    color: #a5a5a5;
+    text-decoration: underline;
+    font-weight: bold;
+
+}

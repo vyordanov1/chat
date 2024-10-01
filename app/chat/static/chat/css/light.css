@@ -157,7 +157,7 @@ tr:nth-child(even) {
     border-radius: 10px;
     min-height: 300px;
     height: fit-content;
-    max-height: 75vh;
+    max-height: 70vh;
     /* Set a maximum height for the chat container */
     overflow-y: auto;
     /* Add a vertical scrollbar when needed */
@@ -330,6 +330,13 @@ tr:nth-child(even) {
     width: 100%;
     justify-content: end;
     gap: 5%;
+}
+
+.account-navigation div a {
+    color: rgba(0, 74, 74, 0.71);
+    text-decoration: underline;
+    font-weight: bold;
+
 }
 
 
