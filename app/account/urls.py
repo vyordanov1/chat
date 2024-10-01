@@ -12,5 +12,6 @@ urlpatterns = [
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
     path('delete_theme/<int:theme_id>/', delete_theme, name='delete_theme'),
     path('user-password-change/<int:user_id>/', user_password_change, name='user_password_change'),
+    path('upload/', upload_image, name='upload_image'),
     path('', account, name='account'),
 ]

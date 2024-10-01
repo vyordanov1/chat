@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

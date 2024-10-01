@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.storage.cookie import MessageSerializer
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from random_word import RandomWords
@@ -106,10 +106,10 @@ def delete_room(request, room_uuid):
 
 
 def account(request):
-    form = ProfileForm(request.POST or None, instance=request.user)
-    if form.is_valid():
-        form.save()
-        return redirect('account')
+    profile_form = ProfileForm(request.POST, instance=request.user)
+    if request.method == "POST":
+        if profile_form.is_valid():
+            profile_form.save()
 
     payload = {
         "page_data": {
@@ -120,9 +120,18 @@ def account(request):
             }
         },
         "user": request.user,
-        "form": form
+        "form": profile_form,
     }
     return render(request, 'account/profile.html', context=payload)
+
+
+def upload_image(request):
+    if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES,
+                         instance=request.user.profile or None)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
 
 
 def select_theme(request):
