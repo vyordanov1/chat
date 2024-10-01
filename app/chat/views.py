@@ -88,6 +88,7 @@ def get_message_history(room):
             })
     return messages
 
+
 def group_chat(request, group_uuid):
     room = ChatRoom.objects.get(uuid=group_uuid)
     messages = get_message_history(room)
@@ -99,10 +100,10 @@ def group_chat(request, group_uuid):
                 "name": "Leave Chat"
             },
             "chat_user": None,
-            "room_name": room.uuid_redacted
         },
         "room": room,
         "chat_messages": messages,
+        "room_name": room.uuid_redacted
     }
     return render(request, 'chat/room.html', context=payload)
 

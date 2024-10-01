@@ -97,7 +97,15 @@ tr:nth-child(even) {
 
 .account-navigation div a {
     color: #a5a5a5;
-    text-decoration: underline;
-    font-weight: bold;
 
+}
+
+.edit-avatar-icon {
+    color: #959595;
+    background-color: #404040;
+    border: 1px solid #8a8a8a;
+}
+
+.edit-avatar-icon:hover {
+    background-color: rgb(30, 30, 30);
 }

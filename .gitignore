@@ -5,9 +5,11 @@ psql/
 app/app/__pycache__/*
 redis_data/
 app/chat/__pycache__/*
+app/chat/templatetags/__pycache__/*
 app/chat/migrations/
 app/login/__pycache__/*
 app/login/migrations/
 app/account/__pycache__/*
 app/account/migrations/
 staticfiles/
+app/media/*

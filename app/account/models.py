@@ -21,6 +21,12 @@ class Profile(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    image = models.ImageField(
+        upload_to='images/',
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return f'{self.user.username}'
 

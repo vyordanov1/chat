@@ -2,6 +2,16 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Themes, Profile
+from django.forms.widgets import ClearableFileInput
+
+
+class HiddenImageInput(forms.ClearableFileInput):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['initial'] = None
+        context['widget']['attrs']['class'] = 'hidden'
+        context['widget']['attrs']['label'] = 'test'
+        return context
 
 
 class ProfileForm(forms.ModelForm):
@@ -59,3 +69,17 @@ class SearchForm(forms.Form):
             }
         )
     )
+
+
+class ImageForm(forms.ModelForm):
+    image = forms.ImageField(
+        widget=ClearableFileInput(
+            attrs={
+                'onchange': 'handleFileUpload(event)'
+            }
+        )
+    )
+
+    class Meta:
+        model = Profile
+        fields = ('image',)
