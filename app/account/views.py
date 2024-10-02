@@ -17,10 +17,16 @@ from .forms import *
 from .models import *
 from login.views import generate_password_reset_request
 from chat.models import ChatRoom, UserChatRoom
+from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 
 
+def is_admin(user):
+    return user.admins.is_admin
+
+
+@user_passes_test(is_admin)
 def manage_rooms(request):
     chat_rooms = ChatRoom.objects.all()
     form = SearchForm(request.POST or None)
@@ -57,6 +63,7 @@ def manage_rooms(request):
     return render(request, 'account/admin/manage_rooms.html', context=payload)
 
 
+@user_passes_test(is_admin)
 def manage_users(request):
     users = User.objects.all()
     form = SearchForm(request.POST or None)
@@ -80,24 +87,49 @@ def manage_users(request):
     return render(request, "account/admin/manage_users.html", context=payload)
 
 
+@user_passes_test(is_admin)
+def edit_user(request, user_id):
+    user = User.objects.get(pk=user_id)
+    form = EditUserForm(request.POST or None,
+                        instance=Admins.objects.get_or_create(
+                            user_id=user_id,
+                        )[0])
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('manage_users')
+
+    payload = {
+        "page_data": {
+            "header": "Edit User",
+            "leave_btn": {
+                "url": "manage_users",
+                "name": "Return"
+            }
+        },
+        "form": form,
+        "u": user,
+    }
+    return render(request, 'account/admin/edit_user.html', payload)
+
+
+@user_passes_test(is_admin)
 def delete_user(request, user_id):
     if request.method == "GET":
         user = get_object_or_404(User, id=user_id)
         user.delete()
     return redirect("manage_users")
 
-
+@user_passes_test(is_admin)
 def create_room(request):
-    r = RandomWords()
-    room = ChatRoom.objects.create()
-    room.uuid_redacted = str(room.uuid).replace('-', '')
-    room.is_public = True
-    room.name = r.get_random_word()
-    room.save()
+    if request.method == "GET":
+        ChatRoom.objects.create(
+            is_public=True
+        )
+        return redirect("manage_rooms")
 
-    return redirect('manage_rooms')
-
-
+@user_passes_test(is_admin)
 def delete_room(request, room_uuid):
     if request.method == "GET":
         room = get_object_or_404(ChatRoom, uuid=room_uuid)
@@ -158,6 +190,7 @@ def select_theme(request):
     return render(request, 'account/themes.html', context=payload)
 
 
+@user_passes_test(is_admin)
 def manage_themes(request):
     form = ThemeForm(request.POST or None)
     if form.is_valid():
@@ -179,9 +212,9 @@ def manage_themes(request):
     return render(request, 'account/admin/themes.html', context=payload)
 
 
+@user_passes_test(is_admin)
 def delete_theme(request, theme_id):
     if request.method == "GET":
         theme = get_object_or_404(Themes, pk=theme_id)
         theme.delete()
     return redirect('manage_themes')
-

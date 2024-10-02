@@ -1,8 +1,11 @@
+import uuid
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Themes, Profile
+from chat.models import ChatRoom
 from django.forms.widgets import ClearableFileInput
+from account.models import Admins
 
 
 class HiddenImageInput(forms.ClearableFileInput):
@@ -83,3 +86,15 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('image',)
+
+
+class EditUserForm(forms.ModelForm):
+    is_admin = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput,
+    )
+
+    class Meta:
+        model = Admins
+        fields = ('is_admin',)
+

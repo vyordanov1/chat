@@ -9,6 +9,7 @@ urlpatterns = [
     path('manage_users/', manage_users, name='manage_users'),
     path('create_room/', create_room, name='create_room'),
     path('delete_room/<uuid:room_uuid>/', delete_room, name='delete_room'),
+    path('edit_user/<int:user_id>', edit_user, name='edit_user'),
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
     path('delete_theme/<int:theme_id>/', delete_theme, name='delete_theme'),
     path('user-password-change/<int:user_id>/', user_password_change, name='user_password_change'),
