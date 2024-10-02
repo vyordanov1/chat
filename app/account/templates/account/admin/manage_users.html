@@ -24,7 +24,7 @@
                 {% endif %}
                 <td>{{ u.last_login }}</td>
                 <td>
-                    <a href="">
+                    <a href="{% url 'edit_user' u.id %}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </td>

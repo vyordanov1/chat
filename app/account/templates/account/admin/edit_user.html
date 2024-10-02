@@ -1,0 +1,13 @@
+{% extends 'account/account.html' %}
+{% load static %}
+{% block account_content %}
+
+    <form action="{% url 'edit_user' u.id %}" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div class="profile-buttons">
+            <button class="save-btn">Save</button>
+        </div>
+    </form>
+
+{% endblock account_content %}

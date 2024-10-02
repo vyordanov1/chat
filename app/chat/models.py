@@ -1,25 +1,9 @@
 import uuid
+from random_word import RandomWords
 from django.db import models
 from django.contrib.auth.models import User
 from account.models import Profile, Themes
 User._meta.get_field('email')._unique = True
-
-# class Profile(models.Model):
-#     user = models.OneToOneField(User,
-#                                 on_delete=models.CASCADE)
-#     uuid = models.UUIDField(
-#         default=uuid.uuid4,
-#         editable=False,
-#         unique=True)
-#
-#     theme_preference = models.ForeignKey(
-#         to="Themes",
-#         null=True,
-#         on_delete=models.SET_NULL,
-#     )
-#
-#     def __str__(self):
-#         return f'{self.user.username}'
 
 
 class ChatRoom(models.Model):
@@ -37,12 +21,23 @@ class ChatRoom(models.Model):
         editable=False
     )
     name = models.CharField(
+        default='',
         blank=True,
         max_length=254,
     )
+
     is_public = models.BooleanField(
         default=False
     )
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            r = RandomWords()
+            self.name = r.get_random_word()
+        if not self.uuid_redacted:
+            self.uuid_redacted = str(self.uuid).replace('-', '')
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -63,20 +58,6 @@ class UserChatRoom(models.Model):
         unique_together = (('user', 'chat_room'),)
 
 
-
-# class Admins(models.Model):
-#     user = models.OneToOneField(
-#         to=User,
-#         on_delete=models.CASCADE,
-#         unique=True,
-#         related_name='admins',
-#     )
-#     is_admin = models.BooleanField(default=False)
-#
-#     def __str__(self):
-#         return self.user.username
-
-
 class Message(models.Model):
     sender = models.ForeignKey(
         to=User,
@@ -92,35 +73,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.sender.username}: {self.timestamp}"
-
-
-# class Themes(models.Model):
-#     name = models.CharField(
-#         max_length=25,
-#         blank=False,
-#         null=False,
-#         default='light',
-#     )
-#
-#     def __str__(self):
-#         return self.name
-
-
-# class PasswordReset(models.Model):
-#     user = models.ForeignKey(
-#         to=User,
-#         on_delete=models.CASCADE,
-#     )
-#     datetime = models.DateTimeField(auto_now_add=True)
-#     uuid = models.UUIDField(
-#         unique=True,
-#         default=uuid.uuid4(),
-#     )
-#     is_done = models.BooleanField(default=False)
-#
-#     def done(self):
-#         self.is_done = True
-#         self.save()
-#
-#     def __str__(self):
-#         return self.user.username
