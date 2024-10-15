@@ -6,4 +6,7 @@ class LoginConfig(AppConfig):
     name = 'login'
 
     def ready(self):
+        """
+        register the signals for the login app
+        """
         import login.signals

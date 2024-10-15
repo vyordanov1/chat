@@ -104,6 +104,11 @@ class PasswordResetForm(forms.Form):
     )
 
     def clean(self):
+        """
+        Overwriting the clean method to make sure the
+        correct user and email are typed in before
+        allowing password reset
+        """
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
@@ -155,6 +160,11 @@ class PasswordChangeForm(forms.Form):
     )
 
     def clean(self):
+        """
+        Overwriting the clean method to
+        compare if both passwords match
+        before changing it
+        """
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')

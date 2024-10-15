@@ -37,12 +37,12 @@ function addMessage(data) {
 
 for (const [key, value] of Object.entries(messages)) {
     addMessage(value);
-}
+} // populate all messages from db to chat view window
 
 chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    addMessage(data);
-    if (data.message != '') {
+    const data = JSON.parse(e.data); // Get message from socket
+    addMessage(data); // add it to the current chat view
+    if (data.message != '') { // hit the endpoint to write the message in the db
         if (data.username === username) {
             fetch(location + '/chat/api/send-message/', {
                 method: 'POST',
