@@ -5,6 +5,9 @@ from .models import PasswordReset
 
 @receiver(pre_save, sender=PasswordReset)
 def close_active_requests(sender, instance, **kwargs):
+    """
+    Signal to make a previously opened password reset request inactive
+    """
     PasswordReset.objects.filter(
         is_active=True,
         is_done=False,

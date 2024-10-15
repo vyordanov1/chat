@@ -142,7 +142,11 @@ def get_active_users():
 
     return logged_in_users
 
+
 def send_message(request):
+    """
+    Endpoint to save a message to the db for later use
+    """
     if request.method == 'POST':
         data = json.loads(request.body)
         content = data.get('content')

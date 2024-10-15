@@ -1,6 +1,5 @@
 import json
 import uuid, logging
-
 from django.contrib.auth.models import User
 from django.contrib.messages.storage.cookie import MessageSerializer
 from django.shortcuts import render, redirect, get_object_or_404
@@ -17,9 +16,12 @@ from .forms import *
 from .models import *
 from login.views import generate_password_reset_request
 from chat.models import ChatRoom, UserChatRoom
-from django.contrib.auth.decorators import user_passes_test
 
-# Create your views here.
+"""
+ importing the user_passes_tests decorator to use with 'admin'
+ pages, so that they are not accessible to ordinary users
+"""
+from django.contrib.auth.decorators import user_passes_test
 
 
 def is_admin(user):
