@@ -12,9 +12,13 @@
             <tr>
                 <td>{{ theme.name }}</td>
                 <td>
-                    <a href="{% url 'delete_theme' theme.id %}">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
+                    <form method="POST" action="{% url 'delete_theme' theme.pk %}">
+                        {% csrf_token %}
+                        {{ delete_form }}
+                            <button type="submit" class="icon-button">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

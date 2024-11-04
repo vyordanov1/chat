@@ -377,6 +377,11 @@ div:has(> #id_image) {
     display: none;
 }
 
+.icon-button, .icon-button:hover {
+    background: none;
+    color: #3875d7;
+}
+
 
 @media (max-width: 450px) {
     .chat-container {

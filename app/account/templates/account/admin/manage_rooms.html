@@ -2,10 +2,14 @@
 {% load static %}
 {% block account_content %}
     <div class="container">
-    <a href="{% url 'create_room' %}">
-        <i class="fa-solid fa-plus"></i>
-        Create Room
-    </a>
+    <form method="POST" action="{% url 'create_room' %}">
+        {% csrf_token %}
+        {{ delete_form }}
+        <button type="submit" class="icon-button">
+            <i class="fa-solid fa-plus"></i>
+            Create Room
+        </button>
+    </form>
     {% include 'chat/search-bar.html' %}
     <table>
         <tr>
@@ -20,9 +24,13 @@
                 <td>{{ r.uuid }}</td>
                 <td>{{ r.name }}</td>
                 <td>
-                    <a href="{% url 'delete_room' r.uuid %}">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
+                    <form method="POST" action="{% url 'delete_room' r.uuid %}">
+                        {% csrf_token %}
+                        {{ delete_form }}
+                            <button type="submit" class="icon-button">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

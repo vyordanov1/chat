@@ -8,6 +8,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from django.views.generic import TemplateView, DetailView
+from django.views.generic.detail import SingleObjectMixin
 from random_word import RandomWords
 from rest_framework import status
 from rest_framework.response import Response
@@ -22,53 +24,64 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 
-def index(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    logged_in_users = get_active_users()
-    rooms = ChatRoom.objects.all()
-    payload = {
-        "users": User.objects.all().exclude(
-            username=request.user.username,
-        ),
-        "logged_in_users": logged_in_users,
-        "page_data": {
-            "leave_btn": {
-                "url": "logout",
-                "name": "Logout"
+
+class MembersView(TemplateView):
+    template_name = 'chat/members.html'
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('login')
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        payload = super().get_context_data(**kwargs)
+        logged_in_users = get_active_users()
+        rooms = ChatRoom.objects.all()
+        payload.update({
+            "users": User.objects.all().exclude(
+                username=self.request.user.username
+            ),
+            "logged_in_users": logged_in_users,
+            "page_data": {
+                "leave_btn": {
+                    "url": "logout",
+                    "name": "Logout"
+                },
+                "header": "Chat members",
             },
-            "header": "Chat members",
-        },
-        "rooms": rooms
-    }
-    return render(request, 'chat/members.html', context=payload)
+            "rooms": rooms
+        })
+        return payload
 
 
-def room(request, room_name):
-    chat_user = User.objects.get(
-        id=Profile.objects.get(
-            uuid=room_name
-        ).user_id
-    )
-    chat_room = get_or_create_room(request.user, chat_user)
-    messages = get_message_history(chat_room)
+class ChatRoomView(TemplateView):
+    template_name = 'chat/room.html'
 
-    payload = {
-        "page_data": {
-            "leave_btn": {
-                "url": "index",
-                "name": "Leave Chat"
+    def get_context_data(self, **kwargs):
+        payload = super().get_context_data(**kwargs)
+        room_name = self.kwargs['room_name']
+        chat_user = User.objects.get(
+            id=Profile.objects.get(
+                uuid=room_name
+            ).user_id
+        )
+        chat_room = get_or_create_room(self.request.user, chat_user)
+        messages = get_message_history(chat_room)
+        payload.update({
+            "page_data": {
+                "leave_btn": {
+                    "url": "index",
+                    "name": "Leave Chat"
+                },
             },
-        },
-        "chat_user": chat_user,
-        "room_name": chat_room.uuid_redacted,
-        "room": {
-            "name": chat_user.username
-        },
-        "chat_messages": messages,
-    }
-    # return JsonResponse(context)
-    return render(request, template_name='chat/room.html', context=payload)
+            "chat_user": chat_user,
+            "room_name": chat_room.uuid_redacted,
+            "room": {
+                "name": chat_user.username
+            },
+            "chat_messages": messages,
+        })
+        return payload
 
 
 def get_message_history(room):
@@ -89,23 +102,27 @@ def get_message_history(room):
     return messages
 
 
-def group_chat(request, group_uuid):
-    room = ChatRoom.objects.get(uuid=group_uuid)
-    messages = get_message_history(room)
+class GroupChatView(TemplateView):
+    template_name = 'chat/room.html'
 
-    payload = {
-        "page_data": {
-            "leave_btn": {
-                "url": "index",
-                "name": "Leave Chat"
+    def get_context_data(self, **kwargs):
+        payload = super().get_context_data(**kwargs)
+        group_uuid = self.kwargs.get('group_uuid')
+        room = ChatRoom.objects.get(uuid=group_uuid)
+        messages = get_message_history(room)
+        payload.update({
+            "page_data": {
+                "leave_btn": {
+                    "url": "index",
+                    "name": "Leave Chat"
+                },
+                "chat_user": None,
             },
-            "chat_user": None,
-        },
-        "room": room,
-        "chat_messages": messages,
-        "room_name": room.uuid_redacted
-    }
-    return render(request, 'chat/room.html', context=payload)
+            "room": room,
+            "chat_messages": messages,
+            "room_name": room.uuid_redacted
+        })
+        return payload
 
 
 def get_or_create_room(user, dest_user):
