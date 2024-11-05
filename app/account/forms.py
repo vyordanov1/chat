@@ -97,4 +97,3 @@ class EditUserForm(forms.ModelForm):
     class Meta:
         model = Admins
         fields = ('is_admin',)
-

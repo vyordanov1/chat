@@ -3,9 +3,9 @@ from .views import *
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
-    path('members/', index, name='index'),
-    path('<str:room_name>/', room, name='room'),
-    path('group/<str:group_uuid>/', group_chat, name='group_chat'),
+    path('members/', MembersView.as_view(), name='index'),
+    path('<str:room_name>/', ChatRoomView.as_view(), name='room'),
+    path('group/<str:group_uuid>/', GroupChatView.as_view(), name='group_chat'),
     path('api/send-message/', send_message, name='send_message'),
-    path('', index, name='none'),
+    path('', MembersView.as_view(), name='none'),
 ]

@@ -2,7 +2,7 @@
 {% load static %}
 {% block account_content %}
 
-    <form action="{% url 'edit_user' u.id %}" method="POST">
+    <form action="{% url 'edit_user' u.pk %}" method="POST">
         {% csrf_token %}
         {{ form }}
         <div class="profile-buttons">

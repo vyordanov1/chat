@@ -1,4 +1,5 @@
 #!/bin/sh
+pip3 install -r requirements.txt
 cd app
 #
 python3 manage.py collectstatic --noinput
