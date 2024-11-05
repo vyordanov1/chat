@@ -1,22 +1,10 @@
-import json
 import uuid, logging
 from django.contrib.auth.models import User
-from django.contrib.messages.storage.cookie import MessageSerializer
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponseRedirect, JsonResponse
-from django.contrib.sessions.models import Session
 from django.urls import reverse_lazy, reverse
-from django.utils import timezone
-from django.views.generic import CreateView, UpdateView, FormView
-from random_word import RandomWords
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.contrib import messages
+from django.views.generic import CreateView, FormView
 from .forms import *
-from app.mixins import PageDataMixin
-
 
 # Create your views here.
 
