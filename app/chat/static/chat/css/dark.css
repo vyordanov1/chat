@@ -62,6 +62,10 @@ tr:nth-child(even) {
     background-color: rgba(96, 96, 96, 0.78);
 }
 
+.chat-message.left {
+    background-color: rgb(28 28 28 / 71%);
+}
+
 .chat-message span {
     color: #a5a5a5;
 }
@@ -79,7 +83,7 @@ tr:nth-child(even) {
     color: #a5a5a5;
 }
 
-.auth-user-icon {
+.auth-user-icon, .reg-form {
     color: #a5a5a5;
 }
 
@@ -97,7 +101,6 @@ tr:nth-child(even) {
 
 .account-navigation div a {
     color: #a5a5a5;
-
 }
 
 .edit-avatar-icon {
@@ -112,4 +115,8 @@ tr:nth-child(even) {
 
 .icon-button, .icon-button:hover {
     color: #959595;
+}
+
+table, th, td {
+    border-color: #6f6f6f;
 }
