@@ -1,9 +1,6 @@
-import uuid
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Themes, Profile
-from chat.models import ChatRoom
 from django.forms.widgets import ClearableFileInput
 from account.models import Admins
 

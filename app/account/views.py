@@ -1,22 +1,9 @@
-import json
-import uuid, logging
 from django.contrib.auth.models import User
-from django.contrib.messages.storage.cookie import MessageSerializer
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
-from django.contrib.sessions.models import Session
 from django.urls import reverse_lazy
-from django.utils import timezone
-from django.views.generic import FormView, DeleteView, CreateView, TemplateView, UpdateView
-from random_word import RandomWords
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.contrib import messages
+from django.views.generic import FormView, DeleteView, CreateView, UpdateView
 from .forms import *
 from .models import *
-from login.views import generate_password_reset_request
 from chat.models import ChatRoom, UserChatRoom
 from chat.forms import CreateChatRoomForm
 from chat.forms import DeleteChatRoomForm
