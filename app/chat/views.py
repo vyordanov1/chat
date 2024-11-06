@@ -33,10 +33,6 @@ class MembersView(TemplateView):
             ),
             "logged_in_users": logged_in_users,
             "page_data": {
-                "leave_btn": {
-                    "url": "logout",
-                    "name": "Logout"
-                },
                 "header": "Chat members",
             },
             "rooms": rooms

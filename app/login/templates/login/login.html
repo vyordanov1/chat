@@ -1,9 +1,9 @@
-{% extends "chat/base.html" %}
+{% extends "chat/main.html" %}
 {% load static %}
-{% block content %}
+{% block inner_content %}
+    <h2 class="form-title">Sign in</h2>
      <form method="post" class="login-form">
         {% csrf_token %}
-        <div class="branding">VB-Chat</div>
         <input type="hidden" name="next" value="{% url 'index' %}">
         {{form.as_p}}
         <div class="btn-container">
@@ -13,5 +13,5 @@
             <a class="reg-form" href="{% url 'register' %}">Register</a>
             <a class="reg-form" href="{% url 'password_reset' %}">Forgot password?</a>
          </div>
-            </form>
-{% endblock content %}
+     </form>
+{% endblock inner_content %}
