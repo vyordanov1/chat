@@ -8,6 +8,14 @@ a {
     color: #a5a5a5;
 }
 
+.container-chat {
+    background-color: #2c2c2c;
+}
+
+.footer, .footer-container {
+    background-color: #1e1e1e;
+}
+
 .container div:first-child {
     color: #a5a5a5;
 }
@@ -80,6 +88,10 @@ tr:nth-child(even) {
 }
 
 .admin-card .icon {
+    color: #a5a5a5;
+}
+
+#chat-icon {
     color: #a5a5a5;
 }
 

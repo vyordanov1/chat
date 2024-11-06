@@ -1,10 +1,12 @@
 import uuid, logging
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, FormView
 from .forms import *
+
 
 # Create your views here.
 
@@ -13,6 +15,17 @@ logger = logging.getLogger(__name__)
 def log_out(request):
     logout(request)
     return redirect('login')
+
+class IndexView(LoginView):
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(self.get_success_url())
+        return super().dispatch(request, *args, **kwargs)
 
 
 class RegisterView(CreateView):
