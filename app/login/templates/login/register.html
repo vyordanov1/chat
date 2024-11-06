@@ -1,8 +1,8 @@
-{% extends "chat/base.html" %}
+{% extends "chat/main.html" %}
 {% load static %}
-{% block content %}
+{% block inner_content %}
+    <h2 class="form-title">Sign up</h2>
     <form  method="POST" class="register-form" id="login-form">
-    <h2>Sign up</h2><br>
     {% csrf_token %}
         <div id="username-input">
             <i class="fa-solid fa-user icon"></i>
@@ -24,4 +24,4 @@
         <button type="submit">Sign up</button>
     <a href="{% url 'login' %}" class="reg-form">Back</a>
     </form>
-{% endblock content %}
+{% endblock inner_content %}

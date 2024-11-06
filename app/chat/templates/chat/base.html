@@ -16,7 +16,31 @@
         {% endwith %}
     {% block javascript %} {% endblock javascript %}
 </head>
+
 <body>
-    {% block content %} {% endblock content %}
+    <nav class="nav-fluid">
+        <ul>
+            <li style="font-size: 2rem"><strong>
+                <i class="fa-regular fa-comment-dots"></i>
+                Chattr
+            </strong></li>
+        </ul>
+    </nav>
+{#    <main class="container-data">#}
+        {% block content %} {% endblock content %}
+{#    </main>#}
 </body>
+    <footer class="footer-container">
+            <div class="footer">
+                <ul>
+                    <a href="https://www.linkedin.com/in/vasil-yordanov-66008417b" target="_blank">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/vyordanov1" target="_blank">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                </ul>
+            </div>
+    ©Copyright. All rights reserved.
+    </footer>
 </html>

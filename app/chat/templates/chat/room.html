@@ -1,40 +1,41 @@
-{% extends "chat/main.html" %}
+{% extends "chat/chat-main.html" %}
 {% load static %}
 {% block javascript %}
     <script type="module" src="{% static 'chat/js/chat.js' %}"></script>
 {% endblock javascript %}
 {% block content %}
 {% load custom_filters %}
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>{{ room.name }}
-                <i class="fas fa-comment"></i>
-            </h1>
-        </div>
-        <div class="chat-logout">
-            {% include 'chat/user_profile.html' %}
-            <div style="float: left; padding-right: 1vw;">
-                <a href="{% url 'index' %}">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    Leave Chat
-                </a>
+    <div class="container-chat">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>{{ room.name }}
+                    <i class="fas fa-comment"></i>
+                </h1>
             </div>
-            <div style="clear: both;"></div>
-        </div>
-        <div class="chat__message__container" id="chat__message__container">
-{#            <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
-        </div>
-        <div class="chat-input-container">
-            <input type="text" id="chat-message-input" placeholder="Type your message..." />
-            <button type="submit" id="chat-message-submit">
-                <i class="fas fa-paper-plane"></i>
-                <span class="button-text">
-                    Send
-                </span>
-            </button>
+            <div class="chat-logout">
+                {% include 'chat/user_profile.html' %}
+                <div style="float: left; padding-right: 1vw;">
+                    <a href="{% url 'index' %}">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        Leave Chat
+                    </a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="chat__message__container" id="chat__message__container">
+    {#            <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-message-input" placeholder="Type your message..." />
+                <button type="submit" id="chat-message-submit">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="button-text">
+                        Send
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
-
     {{ room_name|json_script:"room-name"}}
     {{ request.user.username|json_script:"user" }}
     {{ chat_messages|json_script:"messages" }}
