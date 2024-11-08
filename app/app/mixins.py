@@ -16,3 +16,11 @@ class PageDataMixin(ContextMixin):
             "header": current_page_name,
         }
         return payload
+
+
+class RequireLoginMixin(LoginRequiredMixin):
+    """
+    Mixin for views that should only be displayed to logged in users.
+    """
+    def get_login_url(self):
+        return reverse_lazy('login')

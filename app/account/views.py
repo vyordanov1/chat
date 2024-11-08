@@ -7,6 +7,9 @@ from .models import *
 from chat.models import ChatRoom, UserChatRoom
 from chat.forms import CreateChatRoomForm
 from chat.forms import DeleteChatRoomForm
+from app.mixins import RequireLoginMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 """
  importing the user_passes_tests decorator to use with 'admin'
@@ -18,14 +21,17 @@ from django.utils.decorators import method_decorator
 
 
 def is_admin(user):
+    if not user.is_authenticated:
+        return False
     return user.admins.is_admin
 
 
 @method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageRoomsView(FormView):
+class ManageRoomsView(LoginRequiredMixin, FormView):
     template_name = 'account/admin/manage_rooms.html'
     form_class = SearchForm
     success_url = reverse_lazy('manage_rooms')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -66,10 +72,11 @@ class ManageRoomsView(FormView):
 
 
 @method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageUsersView(FormView):
+class ManageUsersView(LoginRequiredMixin, FormView):
     template_name = 'account/admin/manage_users.html'
     form_class = SearchForm
     success_url = reverse_lazy('manage_users')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -128,13 +135,6 @@ class DeleteUserView(DeleteView):
     success_url = reverse_lazy('manage_users')
     pk_url_kwarg = 'user_id'
 
-@user_passes_test(is_admin)
-def delete_user(request, user_id):
-    if request.method == "GET":
-        user = get_object_or_404(User, id=user_id)
-        user.delete()
-    return redirect("manage_users")
-
 
 @method_decorator(user_passes_test(is_admin), name='dispatch')
 class CreateRoomView(CreateView):
@@ -158,11 +158,12 @@ class DeleteRoomView(DeleteView):
     slug_field = 'uuid'
 
 
-class AccountView(UpdateView):
+class AccountView(LoginRequiredMixin, UpdateView):
     template_name = 'account/profile.html'
     success_url = reverse_lazy('account')
     form_class = ProfileForm
     model = User
+    login_url = reverse_lazy('login')
 
     def get_object(self):
         return self.request.user
@@ -192,6 +193,8 @@ class UploadImageView(UpdateView):
 
 
 def select_theme(request):
+    if not request.user or not request.user.is_authenticated:
+        return redirect(reverse_lazy('login'))
     themes = Themes.objects.all()
     if request.method == 'POST':
         theme_id = request.POST.get('theme')
@@ -216,11 +219,12 @@ def select_theme(request):
 
 
 @method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageThemesView(CreateView):
+class ManageThemesView(LoginRequiredMixin, CreateView):
     template_name = 'account/admin/themes.html'
     form_class = ThemeForm
     success_url = reverse_lazy('manage_themes')
     model = Themes
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
