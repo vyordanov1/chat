@@ -20,6 +20,7 @@ class IndexCounterConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, exit_code):
         self.RUNNING_TASK = False
+        await self.close()
 
     async def receive(self, text_data=None, bytes_data=None):
         pass
@@ -77,6 +78,7 @@ class MembersConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         self.RUNNING_TASK = False
+        await self.close()
 
     async def receive(self, text_data=None, bytes_data=None):
         pass
