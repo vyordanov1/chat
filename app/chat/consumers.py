@@ -1,7 +1,66 @@
 import json
-
+import time
+from channels.db import database_sync_to_async
 from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
+from django.template.loader import render_to_string
+import asyncio
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth.models import User
+from .views import get_active_users
+
+
+class MembersConsumer(AsyncWebsocketConsumer):
+    RUNNING_TASK = True
+
+    async def connect(self):
+        self.RUNNING_TASK = True
+        await self.accept()
+        asyncio.create_task(self.send_users())
+
+    async def disconnect(self, close_code):
+        self.RUNNING_TASK = False
+
+    async def receive(self, text_data=None, bytes_data=None):
+        pass
+
+    async def send_users(self, logged_in_users=None):
+        while self.RUNNING_TASK:
+            if not self.scope['user'].is_authenticated:
+                self.RUNNING_TASK = False
+                await self.close()
+                return
+
+            logged_in_users = await self.get_active_users()
+            await self.send(text_data=json.dumps(
+                logged_in_users
+            ))
+            await asyncio.sleep(5)
+
+    @database_sync_to_async
+    def get_active_users(self):
+        from django.contrib.sessions.models import Session
+        from django.utils import timezone
+        logged_user = self.scope['user']
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        user_ids = []
+        for session in sessions:
+            data = session.get_decoded()
+            user_id = data.get('_auth_user_id', None)
+            if user_id:
+                user_ids.append(user_id)
+
+        return {
+            'all_users': {
+                user.pk: user.username for user in User.objects.filter(is_active=True)
+            },
+            'logged_user': {
+                logged_user.id: logged_user.username
+            },
+            'logged_users': {
+                user.id: user.username for user in User.objects.filter(id__in=user_ids)
+            }
+        }
 
 
 class ChatConsumer(WebsocketConsumer):

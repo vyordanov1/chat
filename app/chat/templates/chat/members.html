@@ -1,39 +1,39 @@
 {% extends "chat/chat-main.html" %}
 {% load static %}
+{% block javascript %}
+    <script type="module" src="{% static 'chat/js/members.js' %}"></script>
+{% endblock javascript %}
 {% block chat_container %}
 {% load custom_filters %}
     <div class="container row align-items-center justify-content-center" style="font-size: 24px">
         Users
     </div><hr>
-    {% for u in users %}
-        <div class="chat-members-div">
-            <div class="member-info">
-                {{ u.username }}
-                {% if u.id in logged_in_users %}
-                    <i class="fa-solid fa-check"></i>
-                {% else %}
-                    <i class="fa-solid fa-xmark" style="color:red"></i>
-                {% endif %}
+    <div class="members-main">
+        {% for u in users %}
+            <div class="chat-members-div">
+                <div class="member-info">
+                    {{ u.username }}
+                </div>
+                <div class="start-chat">
+                    <a href="/chat/{{ u.profile.uuid|remove_hyphens}}/">
+                        <button>
+                            <i class="fa-regular fa-message"></i>
+                            <span class="button-text">
+                                Chat
+                            </span>
+                        </button>
+                    </a>
+                </div>
             </div>
-            <div class="start-chat">
-                <a href="/chat/{{ u.profile.uuid|remove_hyphens}}/">
-                    <button>
-                        <i class="fa-regular fa-message"></i>
-                        <span class="button-text">
-                            Chat
-                        </span>
-                    </button>
-                </a>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
     <div class="container row align-items-center justify-content-center" style="font-size: 24px">
         Rooms
     </div><hr>
         {% for r in rooms %}
             {% if r.is_public %}
                 <div class="chat-members-div">
-                    <div class="member-info">
+                    <div class="group-info">
                         {{ r.name }}
                     </div>
                     <div class="start-chat">
