@@ -3,12 +3,16 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.sessions.models import Session
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView
 from .models import *
 from account.models import Profile
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
+from app.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 
@@ -18,13 +22,9 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 
 
-class MembersView(TemplateView):
+class MembersView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/members.html'
-
-    def get(self, request, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return redirect('login')
-        return super().get(request, *args, **kwargs)
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
@@ -43,8 +43,9 @@ class MembersView(TemplateView):
         return payload
 
 
-class ChatRoomView(TemplateView):
+class ChatRoomView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
@@ -91,8 +92,9 @@ def get_message_history(room):
     return messages
 
 
-class GroupChatView(TemplateView):
+class GroupChatView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
@@ -151,16 +153,6 @@ def get_active_users(logged_user=None):
             user.id: user.username for user in User.objects.filter(id__in=user_ids)
         }
     }
-
-    # logged_in_users_ids = [u.id for u in User.objects.filter(id__in=user_ids)]
-    # logged_in_users = {
-    #     user.id: user.username for user in User.objects.filter(id__in=user_ids)
-    # }
-    #
-    # return {
-    #     "logged_in_users": logged_in_users_ids,
-    #     "logged_users": logged_in_users,
-    # }
 
 
 def send_message(request):
