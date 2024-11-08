@@ -8,4 +8,5 @@ python3 manage.py collectstatic --noinput
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-python3 manage.py runserver 0.0.0.0:8000
+#python3 manage.py runserver 0.0.0.0:8000
+daphne -b 0.0.0.0 -p 8000 app.asgi:application --websocket_timeout -1 --websocket_connect_timeout 100
