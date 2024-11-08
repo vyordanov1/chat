@@ -7,6 +7,9 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 from .models import *
 from account.models import Profile
+from asgiref.sync import async_to_sync, sync_to_async
+from channels.db import database_sync_to_async
+
 
 
 logger = logging.getLogger(__name__)
@@ -25,13 +28,13 @@ class MembersView(TemplateView):
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
-        logged_in_users = get_active_users()
+        # logged_in_users = get_active_users(logged_user=self.request.user)
         rooms = ChatRoom.objects.all()
         payload.update({
             "users": User.objects.all().exclude(
                 username=self.request.user.username
             ),
-            "logged_in_users": logged_in_users,
+            # "logged_in_users": logged_in_users['logged_users'].keys(),
             "page_data": {
                 "header": "Chat members",
             },
@@ -131,8 +134,7 @@ def get_or_create_room(user, dest_user):
 
     return chat_room
 
-
-def get_active_users():
+def get_active_users(logged_user=None):
     sessions = Session.objects.filter(expire_date__gte=timezone.now())
     user_ids = []
     for session in sessions:
@@ -141,9 +143,24 @@ def get_active_users():
         if user_id:
             user_ids.append(user_id)
 
-    logged_in_users = [u.id for u in User.objects.filter(id__in=user_ids)]
+    return {
+        'logged_user': {
+            logged_user.id: logged_user.username
+        },
+        'logged_users': {
+            user.id: user.username for user in User.objects.filter(id__in=user_ids)
+        }
+    }
 
-    return logged_in_users
+    # logged_in_users_ids = [u.id for u in User.objects.filter(id__in=user_ids)]
+    # logged_in_users = {
+    #     user.id: user.username for user in User.objects.filter(id__in=user_ids)
+    # }
+    #
+    # return {
+    #     "logged_in_users": logged_in_users_ids,
+    #     "logged_users": logged_in_users,
+    # }
 
 
 def send_message(request):
