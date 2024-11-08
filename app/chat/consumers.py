@@ -10,13 +10,70 @@ from django.contrib.auth.models import User
 from .views import get_active_users
 
 
+class IndexCounterConsumer(AsyncWebsocketConsumer):
+    RUNNING_TASK = True
+
+    async def connect(self):
+        self.RUNNING_TASK = True
+        await self.accept()
+        await asyncio.create_task(self.send_data())
+
+    async def disconnect(self, exit_code):
+        self.RUNNING_TASK = False
+
+    async def receive(self, text_data=None, bytes_data=None):
+        pass
+
+    async def send_data(self):
+        while self.RUNNING_TASK:
+            active_users = await self.get_active_users()
+            public_rooms = await self.get_public_rooms()
+            messages_sent = await self.get_messages_sent()
+            payload = {
+                "active_users": {
+                    "count": active_users,
+                    "title": "Users Trusting Us"
+                },
+                "public_rooms": {
+                    "count": public_rooms,
+                    "title": "Public Rooms"
+                },
+                "messages_sent": {
+                    "count": messages_sent,
+                    "title": "Messages Sent"
+                },
+                "site_visits": {
+                    "count": 0,
+                    "title": "Site Visits"
+                }
+            }
+            await self.send(text_data=json.dumps(payload))
+            await asyncio.sleep(5)
+
+
+    @database_sync_to_async
+    def get_active_users(self):
+        return len([u.pk for u in User.objects.filter(is_active=True)])
+
+    @database_sync_to_async
+    def get_public_rooms(self):
+        from .models import ChatRoom
+        return len([r for r in ChatRoom.objects.filter(is_public=True)])
+
+    @database_sync_to_async
+    def get_messages_sent(self):
+        from .models import Message
+        return len([m for m in Message.objects.all()])
+
+
+
 class MembersConsumer(AsyncWebsocketConsumer):
     RUNNING_TASK = True
 
     async def connect(self):
         self.RUNNING_TASK = True
         await self.accept()
-        asyncio.create_task(self.send_users())
+        await asyncio.create_task(self.send_users())
 
     async def disconnect(self, close_code):
         self.RUNNING_TASK = False

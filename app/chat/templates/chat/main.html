@@ -1,8 +1,14 @@
 {% extends 'chat/base.html' %}
 {% load static %}
+{% block javascript %}
+    <script type="module" src="{% static 'chat/js/index.js' %}"></script>
+{% endblock javascript %}
 
 {% block content %}
     <div class="container-data">
+        <div class="counter-container">
+{#            JS rendering the data#}
+        </div>
          <div class="illustration">
                 <img src="{% static 'chat/images/Live-Chat-Vector-Illustration.jpg' %}" alt="Illustration of people interacting on a laptop screen">
          </div>
