@@ -561,8 +561,50 @@ div:has(> #id_image) {
     width: fit-content;
 }
 
+.counter-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: absolute;
+    top: 8vh;
+    z-index: 1;
+    width: 100vw;
+    font-size: 24px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    gap: -10px;
+    justify-content: center;
+    text-align: center;
+    width: 10vw;
+    height: 10vh;
+    /*border-bottom: 1px solid rgba(0, 0, 0, 0.2);*/
+}
+
+.divider {
+    width: 60%;
+    padding-left: 40%;
+    height: 22px;
+}
+
+.divider hr {
+    border: none;
+    height: 3px;
+    background: #ad6200;
+}
+
+
+.info-text {
+    font-size: 14px;
+}
+
 
 @media (max-width: 920px) {
+    .counter-container {
+        display: none;
+    }
     .container-data {
         flex-direction: column;
     }
