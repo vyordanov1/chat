@@ -1,5 +1,5 @@
 import uuid
-from random_word import RandomWords
+from wonderwords import RandomWord
 from django.db import models
 from django.contrib.auth.models import User
 from account.models import Profile, Themes
@@ -32,8 +32,8 @@ class ChatRoom(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.name:
-            r = RandomWords()
-            self.name = r.get_random_word()
+            r = RandomWord()
+            self.name = r.word()
         if not self.uuid_redacted:
             self.uuid_redacted = str(self.uuid).replace('-', '')
 
@@ -58,6 +58,13 @@ class UserChatRoom(models.Model):
         unique_together = (('user', 'chat_room'),)
 
 
+class OffensiveWords(models.Model):
+    word = models.CharField(
+        max_length=254,
+        unique=True,
+    )
+
+
 class Message(models.Model):
     sender = models.ForeignKey(
         to=User,
@@ -71,5 +78,52 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        offensive_words = OffensiveWords.objects.all()
+        detected_bad_words = [word.word for word in offensive_words if word.word.lower() in self.content.lower()]
+
+        for word in detected_bad_words:
+            AbuseReport.objects.create(
+                message=self,
+                bad_word=word,
+                type=AbuseReport.ReportChoices.AUTOMATIC
+            )
+
     def __str__(self):
         return f"{self.sender.username}: {self.timestamp}"
+
+
+class AbuseReport(models.Model):
+    class ReportChoices(models.TextChoices):
+        AUTOMATIC = ("AUTOMATIC", "Automatic")
+        MANUAL = ("MANUAL", "Manual")
+
+    message = models.ForeignKey(
+        to=Message,
+        on_delete=models.CASCADE,
+    )
+    bad_word = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+    )
+    type = models.CharField(
+        max_length=100,
+        choices=ReportChoices.choices,
+        default=ReportChoices.AUTOMATIC,
+        blank=False,
+        null=False,
+    )
+    report_date = models.DateTimeField(
+        auto_now_add=True
+    )
+    processed = models.BooleanField(
+        default=False
+    )
+    processed_date = models.DateTimeField(
+        auto_now_add=False,
+        blank=True,
+        null=True
+    )
+

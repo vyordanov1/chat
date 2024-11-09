@@ -1,11 +1,12 @@
 let location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+const usernameBlockDate = JSON.parse(document.getElementById('user_block_date').textContent);
+let chatButtons = document.querySelectorAll('#start-chat-btn');
 
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
     + '/ws/members/'
 );
-
 function updateStatus(data){
     let membersDivs = document.getElementsByClassName('member-info');
     let logged_users = Object.values(data['logged_users']);
@@ -20,12 +21,17 @@ function updateStatus(data){
     }
 }
 
+for (let button of chatButtons) {
+    button.addEventListener('pointerdown', function(e){
+        alert("You have been blocked from entering chat rooms until: " + usernameBlockDate)
+    })
+}
+
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     updateStatus(data);
 };
-
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };

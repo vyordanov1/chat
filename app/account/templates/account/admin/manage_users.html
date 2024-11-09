@@ -8,6 +8,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Admin</th>
+            <th>Blocked</th>
             <th>Last Login</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -17,11 +18,8 @@
                 <td>{{ u.id }}</td>
                 <td>{{ u.username }}</td>
                 <td>{{ u.email }}</td>
-                {% if u.admins.is_admin %}
-                    <td>{{ u.admins.is_admin }}</td>
-                {% else %}
-                    <td>False</td>
-                {% endif %}
+                <td>{% if u.admins.is_admin %}Yes{% else %}No{% endif %}</td>
+                <td>{% if u.profile.blocked %}Yes{% else %}No{% endif %}</td>
                 <td>{{ u.last_login }}</td>
                 <td>
                     <a href="{% url 'edit_user' u.id %}">

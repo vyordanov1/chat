@@ -1,0 +1,36 @@
+{% extends 'account/account.html' %}
+{% load static %}
+{% block account_content %}
+    {{ block.super }}
+<div class="container">
+{% include 'chat/search-bar.html' %}
+    <table style="margin-bottom: 5vh">
+        <tr>
+            <th>User</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Processed</th>
+            <th>Processed Date</th>
+            <th>Process</th>
+        </tr>
+        {% for report in object_list %}
+            <tr>
+                <td>{{ report.message.sender.username }}</td>
+                <td>{{ report.type|lower }}</td>
+                <td>{{ report.report_date }}</td>
+                <td>{% if report.processed %}Yes{% else %}No{% endif %}</td>
+                <td>{{ report.processed_date }}</td>
+                <td>
+                    {% if report.processed %}
+                        <i class="fa-solid fa-square-check"></i>
+                    {% else %}
+                        <a href="{% url 'report_details' report.pk %}">
+                            <i class="fa-solid fa-gavel"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock account_content %}

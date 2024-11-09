@@ -1,0 +1,48 @@
+{% extends 'account/account.html' %}
+{% load static %}
+{% block javascript %}
+    <script type="module" src="{% static 'chat/js/reports.js' %}"></script>
+{% endblock javascript %}
+{% block account_content %}
+    {{ block.super }}
+<div class="container">
+    <table style="margin-bottom: 5vh">
+        <tr>
+            <th>User</th>
+            <th>Message</th>
+            <th>Offending Word</th>
+            <th>Date</th>
+            <th>Block</th>
+            <th>Dismiss</th>
+            <th>Peek</th>
+        </tr>
+        <tr>
+            <td>{{ object_list.message.sender.username }}</td>
+            <td class="offensive-word">{{ object_list.message.content }}</td>
+            <td class="offensive-word">{{ object_list.bad_word }}</td>
+            <td>{{ object_list.message.timestamp }}</td>
+            <td>
+                <form method="POST" action="{% url 'block_user' object_list.pk %}">
+                    {% csrf_token %}
+                        <button type="submit" class="icon-button">
+                            <i class="fa-solid fa-user-lock"></i>
+                        </button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{% url 'dismiss_report' object_list.pk %}">
+                    {% csrf_token %}
+                        <button type="submit" class="icon-button">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                </form>
+            </td>
+            <td>
+                <button type="submit" class="icon-button" id="peek-button">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock account_content %}

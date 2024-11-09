@@ -1,4 +1,5 @@
 import json, logging
+import time
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
@@ -12,23 +13,36 @@ from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
 from app.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-
-
-logger = logging.getLogger(__name__)
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 
 
 # Create your views here.
+def is_user_blocked(user):
+    time_now = int(time.time())
+    blocked_until = user.profile.blocked_until
+
+    if blocked_until is not None:
+        return time_now > int(blocked_until.timestamp())
+    return True
 
 
 class MembersView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/members.html'
     login_url = reverse_lazy('login')
 
+    def get(self, request, *args, **kwargs):
+        time_now = int(time.time())
+        user = request.user
+        if user.profile.blocked and user.profile.blocked_until is not None:
+            if time_now > int(user.profile.blocked_until.timestamp()):
+                user.profile.blocked_until = None
+                user.profile.blocked = False
+                user.profile.save()
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
-        # logged_in_users = get_active_users(logged_user=self.request.user)
         rooms = ChatRoom.objects.all()
         payload.update({
             "users": User.objects.all().exclude(
@@ -43,6 +57,7 @@ class MembersView(LoginRequiredMixin, TemplateView):
         return payload
 
 
+@method_decorator(user_passes_test(is_user_blocked), name='dispatch')
 class ChatRoomView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
     login_url = reverse_lazy('login')
@@ -92,6 +107,7 @@ def get_message_history(room):
     return messages
 
 
+@method_decorator(user_passes_test(is_user_blocked), name='dispatch')
 class GroupChatView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
     login_url = reverse_lazy('login')
@@ -181,4 +197,13 @@ def send_message(request):
     return JsonResponse({
         'error': 'Invalid request'}, status=400
     )
+
+
+class SendMessageView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
 

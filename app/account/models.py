@@ -27,6 +27,23 @@ class Profile(models.Model):
         blank=True
     )
 
+    blocked = models.BooleanField(
+        default=False,
+    )
+
+    blocked_until = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    def save(self, *args, **kwargs):
+        if self.blocked_until is None:
+            self.blocked = False
+        else:
+            self.blocked = True
+
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.user.username}'
 
