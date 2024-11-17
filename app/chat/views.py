@@ -28,7 +28,7 @@ def is_user_blocked(user):
 
 
 class MembersView(LoginRequiredMixin, TemplateView):
-    template_name = 'chat/members.html'
+    template_name = 'members.html'
     login_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):

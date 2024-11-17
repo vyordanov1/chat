@@ -22,9 +22,11 @@ function updateStatus(data){
 }
 
 for (let button of chatButtons) {
-    button.addEventListener('pointerdown', function(e){
-        alert("You have been blocked from entering chat rooms until: " + usernameBlockDate)
-    })
+    if (usernameBlockDate !== '') {
+        button.addEventListener('pointerdown', function (e) {
+            alert("You have been blocked from entering chat rooms until: " + usernameBlockDate)
+        })
+    }
 }
 
 
