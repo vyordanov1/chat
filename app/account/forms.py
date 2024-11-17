@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User, Group
 from .models import Themes, Profile
 from django.forms.widgets import ClearableFileInput
-from account.models import Admins
+# from account.models import Admins
 from chat.models import OffensiveWords, AbuseReport
 import datetime
 

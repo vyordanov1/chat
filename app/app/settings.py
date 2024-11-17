@@ -32,6 +32,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
     'django_browser_reload',
     'daphne',
     'chat',

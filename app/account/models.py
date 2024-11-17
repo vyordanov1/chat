@@ -48,17 +48,17 @@ class Profile(models.Model):
         return f'{self.user.username}'
 
 
-class Admins(models.Model):
-    user = models.OneToOneField(
-        to=User,
-        on_delete=models.CASCADE,
-        unique=True,
-        related_name='admins',
-    )
-    is_admin = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
+# class Admins(models.Model):
+#     user = models.OneToOneField(
+#         to=User,
+#         on_delete=models.CASCADE,
+#         unique=True,
+#         related_name='admins',
+#     )
+#     is_admin = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return self.user.username
 
 
 class Themes(models.Model):
