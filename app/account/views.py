@@ -9,7 +9,7 @@ from chat.models import ChatRoom, UserChatRoom
 from chat.forms import CreateChatRoomForm
 from chat.forms import DeleteChatRoomForm
 from app.mixins import RequireLoginMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from chat.models import OffensiveWords, AbuseReport
 
 """
@@ -20,19 +20,19 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 
 
-def is_admin(user):
-    if not user.is_authenticated:
-        return False
-    return user.admins.is_admin
+# def is_admin(user):
+#     if not user.is_authenticated:
+#         return False
+#     return user.admins.is_admin
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class BlockAbusingUserView(LoginRequiredMixin, FormView):
+class BlockAbusingUserView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     form_class = BlockAbusingUserForm
     success_url = reverse_lazy('abuse_reports')
     login_url = reverse_lazy('login')
     template_name = 'account/admin/block_user.html'
     pk_url_kwarg = 'report_id'
+    permission_required = 'account.can_process_abuse_reports'
 
     def form_valid(self, form):
         """
@@ -69,12 +69,12 @@ class BlockAbusingUserView(LoginRequiredMixin, FormView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class AbuseReportsView(LoginRequiredMixin, FormView):
+class AbuseReportsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     form_class = SearchForm
     template_name = 'account/admin/abuse_reports.html'
     model = AbuseReport
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_view_abuse_reports'
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -104,12 +104,12 @@ class AbuseReportsView(LoginRequiredMixin, FormView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class AbuseReportDetailsView(LoginRequiredMixin, ListView):
+class AbuseReportDetailsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     template_name = 'account/admin/abuse_report_details.html'
     model = AbuseReport
     pk_url_kwarg = 'report_id'
+    permission_required = 'account.can_process_abuse_reports'
 
     def get_queryset(self):
         return AbuseReport.objects.get(pk=self.kwargs['report_id'])
@@ -131,21 +131,21 @@ class AbuseReportDetailsView(LoginRequiredMixin, ListView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class AbuseReportDismissView(LoginRequiredMixin, UpdateView):
+class AbuseReportDismissView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AbuseReport
     login_url = reverse_lazy('login')
     success_url = reverse_lazy('abuse_reports')
     pk_url_kwarg = 'report_id'
     form_class = DismissAbuseForm
+    permission_required = 'account.can_process_abuse_reports'
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class OffensiveWordsView(LoginRequiredMixin, FormView):
+class OffensiveWordsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'account/admin/offensive_words.html'
     form_class = SearchForm
     success_url = reverse_lazy('offensive_words')
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_manage_offending_words'
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -172,28 +172,28 @@ class OffensiveWordsView(LoginRequiredMixin, FormView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class OffensiveWordCreateView(LoginRequiredMixin, CreateView):
+class OffensiveWordCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = OffensiveWords
     form_class = OffensiveWordCreateForm
     success_url = reverse_lazy('offensive_words')
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_manage_offending_words'
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class DeleteOffensiveWordView(LoginRequiredMixin, DeleteView):
+class DeleteOffensiveWordView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = OffensiveWords
     success_url = reverse_lazy('offensive_words')
     login_url = reverse_lazy('login')
     pk_url_kwarg = 'word_id'
+    permission_required = 'account.can_manage_offending_words'
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageRoomsView(LoginRequiredMixin, FormView):
+class ManageRoomsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'account/admin/manage_rooms.html'
     form_class = SearchForm
     success_url = reverse_lazy('manage_rooms')
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_manage_rooms'
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -233,12 +233,12 @@ class ManageRoomsView(LoginRequiredMixin, FormView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageUsersView(LoginRequiredMixin, FormView):
+class ManageUsersView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'account/admin/manage_users.html'
     form_class = SearchForm
     success_url = reverse_lazy('manage_users')
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_manage_users'
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
@@ -264,41 +264,40 @@ class ManageUsersView(LoginRequiredMixin, FormView):
         return payload
 
 
-@user_passes_test(is_admin)
-def edit_user(request, user_id):
-    user = User.objects.get(pk=user_id)
-    form = EditUserForm(request.POST or None,
-                        instance=Admins.objects.get_or_create(
-                            user_id=user_id,
-                        )[0])
+# @user_passes_test(is_admin)
+# def edit_user(request, user_id):
+#     user = User.objects.get(pk=user_id)
+#     # form = EditUserForm(request.POST or None,
+#     #                     instance=Admins.objects.get_or_create(
+#     #                         user_id=user_id,
+#     #                     )[0])
+#     form = UserGroupForm()
+#
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             form.save()
+#             return redirect('manage_users')
+#
+#     payload = {
+#         "page_data": {
+#             "header": "Edit User",
+#             "leave_btn": {
+#                 "url": "manage_users",
+#                 "name": "Return"
+#             }
+#         },
+#         "form": form,
+#         "u": user,
+#     }
+#     return render(request, 'account/admin/edit_user.html', payload)
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('manage_users')
 
-    payload = {
-        "page_data": {
-            "header": "Edit User",
-            "leave_btn": {
-                "url": "manage_users",
-                "name": "Return"
-            }
-        },
-        "form": form,
-        "u": user,
-    }
-    return render(request, 'account/admin/edit_user.html', payload)
-
-
-@method_decorator(user_passes_test(is_admin), name='dispatch')
 class DeleteUserView(DeleteView):
     model = User
     success_url = reverse_lazy('manage_users')
     pk_url_kwarg = 'user_id'
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
 class CreateRoomView(CreateView):
     template_name = 'account/admin/manage_users.html'
     model = ChatRoom
@@ -310,7 +309,6 @@ class CreateRoomView(CreateView):
         return super().form_valid(form)
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
 class DeleteRoomView(DeleteView):
     template_name = 'account/admin/manage_users.html'
     model = ChatRoom
@@ -380,13 +378,13 @@ def select_theme(request):
     return render(request, 'account/themes.html', context=payload)
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
-class ManageThemesView(LoginRequiredMixin, CreateView):
+class ManageThemesView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'account/admin/themes.html'
     form_class = ThemeForm
     success_url = reverse_lazy('manage_themes')
     model = Themes
     login_url = reverse_lazy('login')
+    permission_required = 'account.can_manage_themes'
 
     def get_context_data(self, **kwargs):
         payload = super().get_context_data(**kwargs)
@@ -403,7 +401,6 @@ class ManageThemesView(LoginRequiredMixin, CreateView):
         return payload
 
 
-@method_decorator(user_passes_test(is_admin), name='dispatch')
 class DeleteThemesView(DeleteView):
     model = Themes
     template_name = 'account/admin/themes.html'

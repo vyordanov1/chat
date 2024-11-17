@@ -10,7 +10,7 @@
             <th>Admin</th>
             <th>Blocked</th>
             <th>Last Login</th>
-            <th>Edit</th>
+{#            <th>Edit</th>#}
             <th>Delete</th>
         </tr>
         {% for u in users %}
@@ -21,11 +21,11 @@
                 <td>{% if u.admins.is_admin %}Yes{% else %}No{% endif %}</td>
                 <td>{% if u.profile.blocked %}Yes{% else %}No{% endif %}</td>
                 <td>{{ u.last_login }}</td>
-                <td>
-                    <a href="{% url 'edit_user' u.id %}">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                </td>
+{#                <td>#}
+{#                    <a href="{% url 'edit_user' u.id %}">#}
+{#                        <i class="fa-solid fa-pen-to-square"></i>#}
+{#                    </a>#}
+{#                </td>#}
                 <td>
                     <form method="POST" action="{% url 'delete_user' u.pk %}">
                         {% csrf_token %}

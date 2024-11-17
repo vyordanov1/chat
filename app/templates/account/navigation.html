@@ -6,22 +6,30 @@
         <div class="col">
             <a href="{% url 'select_theme' %}">Theme</a>
         </div>
-        {% if user.admins.is_admin %}
-        <div class="col">
-            <a href="{% url 'manage_users' %}">Users</a>
-        </div>
-        <div class="col">
-            <a href="{% url 'manage_rooms' %}">Chat Rooms</a>
-        </div>
-        <div class="col">
-            <a href="{% url 'manage_themes' %}">Themes</a>
-        </div>
-        <div class="col">
-            <a href="{% url 'offensive_words' %}">Offensive Words</a>
-        </div>
-        <div class="col">
-            <a href="{% url 'abuse_reports' %}">Abuse Reports</a>
-        </div>
+        {% if perms.account.can_view_users %}
+            <div class="col">
+                <a href="{% url 'manage_users' %}">Users</a>
+            </div>
+        {% endif %}
+        {% if perms.account.can_manage_rooms %}
+            <div class="col">
+                <a href="{% url 'manage_rooms' %}">Chat Rooms</a>
+            </div>
+        {% endif %}
+        {% if perms.account.can_manage_themes %}
+            <div class="col">
+                <a href="{% url 'manage_themes' %}">Themes</a>
+            </div>
+        {% endif %}
+        {% if perms.account.can_manage_offending_words %}
+            <div class="col">
+                <a href="{% url 'offensive_words' %}">Offensive Words</a>
+            </div>
+        {% endif %}
+        {% if perms.account.can_view_abuse_reports %}
+            <div class="col">
+                <a href="{% url 'abuse_reports' %}">Abuse Reports</a>
+            </div>
         {% endif %}
     </div>
 </div>
