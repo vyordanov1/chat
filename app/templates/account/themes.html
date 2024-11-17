@@ -3,7 +3,10 @@
 {% block account_content %}
     <div class="row">
         {% for theme in themes %}
-                <div class="col-md-4 theme-card glass py-5 glass mx-3 my-2">
+                <div class="col-md-3 theme-card glass py-5 glass mx-3 my-2">
+                {% with theme_name=theme.name %}
+                    <img class="theme-img" src="{% static 'chat/images/'|add:theme_name|add:'.png' %}" alt="Avatar" style="width:100%">
+                {% endwith %}
                     <div class="container">
                     <h3 class="d-flex justify-content-center">{{theme.name|upper}}</h3>
                     <form method="POST" action="{% url 'select_theme' %}">

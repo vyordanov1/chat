@@ -605,6 +605,11 @@ div:has(> #id_image) {
     text-shadow: 0 0 5px rgb(0 0 0 / 32%);
 }
 
+.theme-img:hover {
+    transition: transform .3s;
+    transform: scale(4);
+}
+
 
 @media (max-width: 920px) {
     .counter-container {
@@ -663,6 +668,9 @@ div:has(> #id_image) {
 
     .edit-avatar-icon {
         top: 80%;
+    }
+    .theme-img:hover {
+        transform: none;
     }
 }
 
