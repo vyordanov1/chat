@@ -605,6 +605,10 @@ div:has(> #id_image) {
     text-shadow: 0 0 5px rgb(0 0 0 / 32%);
 }
 
+.theme-img {
+    transition: transform .3s;
+}
+
 .theme-img:hover {
     transition: transform .3s;
     transform: scale(4);
