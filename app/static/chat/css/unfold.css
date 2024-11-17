@@ -1,0 +1,156 @@
+body {
+    background-color: rgb(21,30,49);
+    color: #a5a5a5;
+
+}
+
+.nav-fluid {
+    border-bottom: 1px solid #87878724;
+}
+
+a {
+    color: #a5a5a5;
+}
+
+.container-chat {
+    background-color: rgb(14,20,34);
+}
+
+.footer, .footer-container {
+    background-color: rgb(21,30,49);
+    border-top: 1px solid #87878724;
+}
+
+.container div:first-child {
+    color: #a5a5a5;
+}
+
+input[type="text"],
+input[type="password"] {
+    background-color: rgb(28, 39, 66);
+    color: #a5a5a5;
+}
+
+button {
+    background-color: rgba(147, 51, 233, 0.76);
+    /*background-color: rgb(31,41,55);*/
+    color: #a5a5a5;
+}
+
+
+button:hover {
+    background-color: rgba(105, 36, 166, 0.76);
+}
+
+td, th {
+  border: 1px solid #1e1e1e;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(28, 39, 66);
+}
+
+.chat-header {
+    background-color: rgb(21 30 49);
+    color: #a5a5a5;
+}
+
+.chat__members__container {
+    background-color: rgb(21 30 49);
+}
+
+.chat-members-div {
+    color: #a5a5a5;
+}
+
+.chat__message__container {
+    background-color: rgb(21 30 49);
+}
+
+.chat-message {
+    background-color: rgb(21 30 49);
+}
+
+.chat-message.right {
+    background-color: rgb(31 45 73 / 90%);
+    border: 1px solid #87878724;
+}
+
+.chat-message.left {
+    background-color: rgba(14, 20, 34, 0.77);
+    border: 1px solid #87878724;
+}
+
+.chat-message span {
+    color: #a5a5a5;
+}
+
+.admin-card {
+    border: 1px solid #ccc;
+    color: #a5a5a5;
+}
+
+.admin-card:hover {
+    background-color: rgba(30, 30, 30, 0.71);
+}
+
+.admin-card .icon {
+    color: rgb(208,212,217);
+}
+
+#chat-icon {
+    color: #a5a5a5;
+}
+
+.auth-user-icon, .reg-form {
+    color: #a5a5a5;
+}
+
+.dropdown-content {
+  background-color: rgb(21 30 49);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: #a5a5a5;
+}
+
+.dropdown-content a:hover {background-color: rgb(14,20,34);}
+.dropdown:hover .dropdown-content {display: block;}
+
+.account-navigation div a {
+    color: #a5a5a5;
+}
+
+.edit-avatar-icon {
+    color: #959595;
+    background-color: rgb(21 30 49);
+    border: 1px solid #8a8a8a;
+}
+
+.edit-avatar-icon:hover {
+    background-color: rgb(30, 30, 30);
+    color: rgba(147, 51, 233, 0.76);
+}
+
+.icon-button {
+    color: #959595;
+}
+
+.icon-button:hover {
+    color: rgba(147, 51, 233, 0.76);
+}
+
+table, th, td {
+    border-color: #6f6f6f;
+}
+
+a:hover {
+    color: rgba(147, 51, 233, 0.76);
+}
+
+.account-navigation div a:hover {
+    color: rgba(147, 51, 233, 0.76);
+}

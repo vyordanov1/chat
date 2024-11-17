@@ -20,7 +20,7 @@ def create_default_themes(sender, **kwargs):
     """
     Create a signal that will automatically create the default themes ( dark/light )
     """
-    required = ['dark', 'light']
+    required = ['dark', 'light', 'unfold']
     for entry in required:
         try:
             Themes.objects.get(name=entry.lower())
