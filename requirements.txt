@@ -22,3 +22,4 @@ django_browser_reload
 random-word
 django_rest_framework
 Pillow
+wonderwords
