@@ -14,5 +14,12 @@ urlpatterns = [
     path('delete_theme/<int:theme_id>/', DeleteThemesView.as_view(), name='delete_theme'),
     path('user-password-change/<int:user_id>/', UserPasswordChange.as_view(), name='user_password_change'),
     path('upload/', UploadImageView.as_view(), name='upload_image'),
+    path('offensive_words/', OffensiveWordsView.as_view(), name='offensive_words'),
+    path('add_word/', OffensiveWordCreateView.as_view(), name='add_word'),
+    path('delete_word/<int:word_id>/', DeleteOffensiveWordView.as_view(), name='delete_word'),
+    path('abuse_reports/', AbuseReportsView.as_view(), name='abuse_reports'),
+    path('report/<int:report_id>/', AbuseReportDetailsView.as_view(), name='report_details'),
+    path('dismiss_report/<int:report_id>/', AbuseReportDismissView.as_view(), name='dismiss_report'),
+    path('block_user/<int:report_id>/', BlockAbusingUserView.as_view(), name='block_user'),
     path('', AccountView.as_view(), name='account'),
 ]

@@ -600,6 +600,11 @@ div:has(> #id_image) {
     font-size: 14px;
 }
 
+.offensive-word {
+    color: transparent;
+    text-shadow: 0 0 5px rgb(0 0 0 / 32%);
+}
+
 
 @media (max-width: 920px) {
     .counter-container {

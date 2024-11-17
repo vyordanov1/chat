@@ -1,0 +1,44 @@
+{% extends 'account/account.html' %}
+{% load static %}
+{% block javascript %}
+    <script type="module" src="{% static 'chat/js/reports.js' %}"></script>
+{% endblock javascript %}
+{% block account_content %}
+    {{ block.super }}
+<div class="container">
+{% include '../../chat/search-bar.html' %}
+    <table style="margin-bottom: 5vh">
+        <tr>
+            <th>Word
+                <button class="icon-button" id="peek-button">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </th>
+            <th>Delete</th>
+        </tr>
+        {% for word in offensive_words %}
+            <tr>
+                <td class="offensive-word">{{ word.word }}</td>
+                <td>
+                    <form method="POST" action="{% url 'delete_word' word.pk %}">
+                        {% csrf_token %}
+                        {{ delete_form }}
+                            <button type="submit" class="icon-button">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form method="POST" action="{% url 'add_word' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ create_form }}
+            </div>
+        </div>
+        <button class="save-btn">Add</button>
+    </form>
+</div>
+{% endblock account_content %}

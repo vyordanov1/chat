@@ -1,10 +1,12 @@
-{% extends "chat/chat-main.html" %}
+{% extends "chat-main.html" %}
 {% load static %}
+{% load tz %}
 {% block javascript %}
     <script type="module" src="{% static 'chat/js/members.js' %}"></script>
 {% endblock javascript %}
 {% block chat_container %}
 {% load custom_filters %}
+    {% now "U" as current_time %}
     <div class="container row align-items-center justify-content-center" style="font-size: 24px">
         Users
     </div><hr>
@@ -16,7 +18,8 @@
                 </div>
                 <div class="start-chat">
                     <a href="/chat/{{ u.profile.uuid|remove_hyphens}}/">
-                        <button>
+                        <button id="start-chat-btn"
+                                {% if current_time < user.profile.blocked_until|date:"U" %} disabled style="background-color: rgba(255,0,0,0.48)"{% endif %}>
                             <i class="fa-regular fa-message"></i>
                             <span class="button-text">
                                 Chat
@@ -38,7 +41,8 @@
                     </div>
                     <div class="start-chat">
                         <a href="/chat/group/{{ r.uuid|remove_hyphens}}/">
-                            <button>
+                            <button id="start-chat-btn"
+                                    {% if current_time < user.profile.blocked_until|date:"U" %} disabled style="background-color: rgba(255,0,0,0.48)"{% endif %}>
                                 <i class="fa-regular fa-message"></i>
                                 <span class="button-text">
                                     Join
@@ -49,5 +53,5 @@
                 </div>
             {% endif %}
     {% endfor %}
-
+    {{ request.user.profile.blocked_until|date:"d M Y H:i:s"|json_script:"user_block_date" }}
 {% endblock chat_container %}

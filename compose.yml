@@ -35,6 +35,7 @@ services:
       DB: ${PSQL_DATABASE}
       DB_PASS: ${PSQL_PASS}
     volumes:
+      - psql:/var/lib/postgresql/data
       - ./postgres/init.sh:/scripts/init.sh
     networks:
       - back

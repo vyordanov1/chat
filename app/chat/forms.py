@@ -1,5 +1,6 @@
 from django import forms
 from .models import ChatRoom
+from account.models import *
 
 
 class BaseChatRoomForm(forms.ModelForm):
