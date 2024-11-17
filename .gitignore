@@ -15,3 +15,10 @@ staticfiles/
 app/media/
 psql_data/
 app/static/admin
+app/account/management/__init__.py
+app/account/management/__pycache__/
+app/account/management/commands/__pycache__/
+app/account/management/commands/__init__.py
+app/static/django-browser-reload/
+app/__init__.py
+
