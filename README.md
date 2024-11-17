@@ -24,6 +24,11 @@ PSQL_PASS=''
 PSQL_ENGINE='django.db.backends.postgresql'
 PSQL_CONTAINER_NAME=''
 DJANGO_CONTAINER_NAME=''
+FERNET_KEY=''
+```
+### You can generate your key using 
+```
+Fernet.generate_key().decode()
 ```
 
 ### Update the compose.yml file and set the Django and Postgres container names
