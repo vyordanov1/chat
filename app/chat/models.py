@@ -3,6 +3,7 @@ from wonderwords import RandomWord
 from django.db import models
 from django.contrib.auth.models import User
 from account.models import Profile, Themes
+from .secure_messages import encrypt_text, decrypt_text
 User._meta.get_field('email')._unique = True
 
 
@@ -65,6 +66,18 @@ class OffensiveWords(models.Model):
     )
 
 
+class EncryptedTextField(models.TextField):
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        return decrypt_text(value)
+
+    def get_prep_value(self, value):
+        if value is None:
+            return value
+        return encrypt_text(value)
+
+
 class Message(models.Model):
     sender = models.ForeignKey(
         to=User,
@@ -75,7 +88,8 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name='messages',
     )
-    content = models.TextField()
+    # content = models.TextField()
+    content = EncryptedTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
