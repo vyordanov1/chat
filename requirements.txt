@@ -23,3 +23,4 @@ random-word
 django_rest_framework
 Pillow
 wonderwords
+django-unfold

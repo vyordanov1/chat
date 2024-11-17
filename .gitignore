@@ -21,4 +21,5 @@ app/account/management/commands/__pycache__/
 app/account/management/commands/__init__.py
 app/static/django-browser-reload/
 app/__init__.py
+app/static/unfold/
 

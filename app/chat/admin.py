@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import OffensiveWords, Message
+from unfold.admin import ModelAdmin
+
 #
 #
 # @admin.register(Admins)
@@ -8,10 +10,10 @@ from .models import OffensiveWords, Message
 
 
 @admin.register(OffensiveWords)
-class OffensiveWordsAdmin(admin.ModelAdmin):
+class OffensiveWordsAdmin(ModelAdmin):
     list_display = ('id', 'word')
 
 
 @admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
+class MessageAdmin(ModelAdmin):
     list_display = ('id', 'sender', 'content')
