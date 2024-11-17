@@ -1,10 +1,11 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .models import Themes, Profile
 from django.forms.widgets import ClearableFileInput
 from account.models import Admins
 from chat.models import OffensiveWords, AbuseReport
 import datetime
+
 
 
 class HiddenImageInput(forms.ClearableFileInput):
@@ -135,15 +136,16 @@ class ImageForm(forms.ModelForm):
         fields = ('image',)
 
 
-class EditUserForm(forms.ModelForm):
-    is_admin = forms.BooleanField(
-        required=False,
-        widget=forms.CheckboxInput,
-    )
+# class EditUserForm(forms.ModelForm):
+#     is_admin = forms.BooleanField(
+#         required=False,
+#         widget=forms.CheckboxInput,
+#     )
+#
+#     class Meta:
+#         model = Admins
+#         fields = ('is_admin',)
 
-    class Meta:
-        model = Admins
-        fields = ('is_admin',)
 
 
 class DismissAbuseForm(forms.ModelForm):

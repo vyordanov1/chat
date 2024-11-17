@@ -20,10 +20,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 
 
-def is_admin(user):
-    if not user.is_authenticated:
-        return False
-    return user.admins.is_admin
+# def is_admin(user):
+#     if not user.is_authenticated:
+#         return False
+#     return user.admins.is_admin
 
 
 class BlockAbusingUserView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
@@ -264,31 +264,32 @@ class ManageUsersView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
         return payload
 
 
-@user_passes_test(is_admin)
-def edit_user(request, user_id):
-    user = User.objects.get(pk=user_id)
-    form = EditUserForm(request.POST or None,
-                        instance=Admins.objects.get_or_create(
-                            user_id=user_id,
-                        )[0])
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('manage_users')
-
-    payload = {
-        "page_data": {
-            "header": "Edit User",
-            "leave_btn": {
-                "url": "manage_users",
-                "name": "Return"
-            }
-        },
-        "form": form,
-        "u": user,
-    }
-    return render(request, 'account/admin/edit_user.html', payload)
+# @user_passes_test(is_admin)
+# def edit_user(request, user_id):
+#     user = User.objects.get(pk=user_id)
+#     # form = EditUserForm(request.POST or None,
+#     #                     instance=Admins.objects.get_or_create(
+#     #                         user_id=user_id,
+#     #                     )[0])
+#     form = UserGroupForm()
+#
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             form.save()
+#             return redirect('manage_users')
+#
+#     payload = {
+#         "page_data": {
+#             "header": "Edit User",
+#             "leave_btn": {
+#                 "url": "manage_users",
+#                 "name": "Return"
+#             }
+#         },
+#         "form": form,
+#         "u": user,
+#     }
+#     return render(request, 'account/admin/edit_user.html', payload)
 
 
 class DeleteUserView(DeleteView):
