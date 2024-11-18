@@ -18,7 +18,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_migrate)
 def create_default_themes(sender, **kwargs):
     """
-    Create a signal that will automatically create the default themes ( dark/light )
+    Create a signal that will automatically create the default themes ( dark/light/unfold )
     """
     required = ['dark', 'light', 'unfold']
     for entry in required:

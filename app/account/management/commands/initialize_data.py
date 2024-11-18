@@ -3,6 +3,10 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 class Command(BaseCommand):
+    """
+    Commands class to initialize the custom Admins and Moderators groups and their respoective permissions
+    upon project/django container start.
+    """
     help = 'Initialize groups and permissions'
 
     def handle(self, *args, **kwargs):
