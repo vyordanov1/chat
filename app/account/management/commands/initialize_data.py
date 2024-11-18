@@ -16,7 +16,7 @@ class Command(BaseCommand):
             {"codename": "can_manage_offending_words", "name": "Can manage offending words page"},
         ]
 
-        content_type = ContentType.objects.get(app_label='account', model='admins')
+        content_type = ContentType.objects.get(app_label='account', model='profile')
 
         for perm in permissions:
             Permission.objects.get_or_create(
