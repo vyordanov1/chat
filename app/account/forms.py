@@ -18,6 +18,9 @@ class HiddenImageInput(forms.ClearableFileInput):
 
 
 class AbusingUserBaseForm(forms.Form):
+    """
+    Base Form for processing the abusing users ( those writing offensive things in chats )
+    """
     blocked_until = forms.DateTimeField(
         label='Block until',
         required=True,
@@ -34,6 +37,9 @@ class BlockAbusingUserForm(AbusingUserBaseForm):
 
 
 class OffensiveWordBaseForm(forms.ModelForm):
+    """
+    Base Form for managing offensive words by moderators
+    """
     class Meta:
         model = OffensiveWords
         fields = '__all__'
@@ -53,7 +59,6 @@ class OffensiveWordCreateForm(OffensiveWordBaseForm):
             }
         )
     )
-
 
 class AbuseReportBaseForm(forms.ModelForm):
     class Meta:

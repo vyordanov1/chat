@@ -11,6 +11,9 @@ from .views import get_active_users
 
 
 class IndexCounterConsumer(AsyncWebsocketConsumer):
+    """
+    Consumer that sends general information about the app stats to the index page.
+    """
     RUNNING_TASK = True
 
     async def connect(self):
@@ -52,16 +55,16 @@ class IndexCounterConsumer(AsyncWebsocketConsumer):
             await asyncio.sleep(5)
 
 
-    @database_sync_to_async
+    @database_sync_to_async #decorator used in order to later call the func in async method
     def get_active_users(self):
         return len([u.pk for u in User.objects.filter(is_active=True)])
 
-    @database_sync_to_async
+    @database_sync_to_async #decorator used in order to later call the func in async method
     def get_public_rooms(self):
         from .models import ChatRoom
         return len([r for r in ChatRoom.objects.filter(is_public=True)])
 
-    @database_sync_to_async
+    @database_sync_to_async #decorator used in order to later call the func in async method
     def get_messages_sent(self):
         from .models import Message
         return len([m for m in Message.objects.all()])
@@ -69,6 +72,10 @@ class IndexCounterConsumer(AsyncWebsocketConsumer):
 
 
 class MembersConsumer(AsyncWebsocketConsumer):
+    """
+    Consumer used to send information to the 'members' page.
+    Information being sent tells the status of users ( online/offline )
+    """
     RUNNING_TASK = True
 
     async def connect(self):
@@ -96,7 +103,7 @@ class MembersConsumer(AsyncWebsocketConsumer):
             ))
             await asyncio.sleep(5)
 
-    @database_sync_to_async
+    @database_sync_to_async #decorator used in order to later call the func in async method
     def get_active_users(self):
         from django.contrib.sessions.models import Session
         from django.utils import timezone
@@ -124,9 +131,13 @@ class MembersConsumer(AsyncWebsocketConsumer):
 
 class ChatConsumer(WebsocketConsumer):
     """
-    Consumer class to handle message exchange in the chat app
+    Consumer class to handle message exchange in the chat app.
+    This consumer uses the django channel layers which rely on Redis to handle channel layers!
     """
     def connect(self):
+        """
+        Connects the consumer to the channel layer.
+        """
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f"chat_{self.room_name}"
 

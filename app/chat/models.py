@@ -88,7 +88,6 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name='messages',
     )
-    # content = models.TextField()
     content = EncryptedTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

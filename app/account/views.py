@@ -11,19 +11,8 @@ from chat.forms import DeleteChatRoomForm
 from app.mixins import RequireLoginMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from chat.models import OffensiveWords, AbuseReport
-
-"""
- importing the user_passes_tests decorator to use with 'admin'
- pages, so that they are not accessible to ordinary users
-"""
-from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 
-
-# def is_admin(user):
-#     if not user.is_authenticated:
-#         return False
-#     return user.admins.is_admin
 
 
 class BlockAbusingUserView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
@@ -77,6 +66,10 @@ class AbuseReportsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     permission_required = 'account.can_view_abuse_reports'
 
     def form_valid(self, form):
+        """
+        Overwriting the form_valid method to return the correct information if the search form is submitted.
+        New context data is attached to the reports property.
+        """
         query = form.cleaned_data['query']
         if query:
             self.reports = AbuseReport.objects.filter(message__sender__username__icontains=query).order_by(
@@ -148,6 +141,10 @@ class OffensiveWordsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     permission_required = 'account.can_manage_offending_words'
 
     def form_valid(self, form):
+        """
+        Overwriting the form_valid method to return the correct information if the search form is submitted.
+        New context data is attached to the words property.
+        """
         query = form.cleaned_data['query']
         if query:
             self.words = OffensiveWords.objects.filter(word__icontains=query)
@@ -196,6 +193,10 @@ class ManageRoomsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     permission_required = 'account.can_manage_rooms'
 
     def form_valid(self, form):
+        """
+        Overwriting the form_valid method to return the correct information if the search form is submitted.
+        New context data is attached to the chat_rooms property.
+        """
         query = form.cleaned_data['query']
         if query:
             self.chat_rooms = ChatRoom.objects.filter(name__icontains=query)
@@ -241,6 +242,10 @@ class ManageUsersView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     permission_required = 'account.can_manage_users'
 
     def form_valid(self, form):
+        """
+        Overwriting the form_valid method to return the correct information if the search form is submitted.
+        New context data is attached to the users property.
+        """
         query = form.cleaned_data['query']
         if query:
             self.users = User.objects.filter(username__icontains=query)
@@ -262,34 +267,6 @@ class ManageUsersView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
             }
         )
         return payload
-
-
-# @user_passes_test(is_admin)
-# def edit_user(request, user_id):
-#     user = User.objects.get(pk=user_id)
-#     # form = EditUserForm(request.POST or None,
-#     #                     instance=Admins.objects.get_or_create(
-#     #                         user_id=user_id,
-#     #                     )[0])
-#     form = UserGroupForm()
-#
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             form.save()
-#             return redirect('manage_users')
-#
-#     payload = {
-#         "page_data": {
-#             "header": "Edit User",
-#             "leave_btn": {
-#                 "url": "manage_users",
-#                 "name": "Return"
-#             }
-#         },
-#         "form": form,
-#         "u": user,
-#     }
-#     return render(request, 'account/admin/edit_user.html', payload)
 
 
 class DeleteUserView(DeleteView):
@@ -352,6 +329,7 @@ class UploadImageView(UpdateView):
         return self.request.user.profile
 
 
+### Need to convert to CBV!!!
 def select_theme(request):
     if not request.user or not request.user.is_authenticated:
         return redirect(reverse_lazy('login'))
