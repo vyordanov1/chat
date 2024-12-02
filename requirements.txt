@@ -24,3 +24,7 @@ django_rest_framework
 Pillow
 wonderwords
 django-unfold
+pre-commit
+flake8
+flake8-pyproject
+bandit

@@ -1,0 +1,17 @@
+[tool.flake8]
+max-line-length = 120
+select = [
+    "DJ13",
+    "DJ08",
+    "E501",
+    "F401",
+    "E302"
+]
+exclude = [
+    ".venv",
+    "__init__.py",
+    "__pycache__",
+    "migrations",
+    ".git",
+    ".github",
+]
