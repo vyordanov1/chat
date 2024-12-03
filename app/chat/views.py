@@ -1,7 +1,6 @@
-import json, logging
-import time
+import json, time
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.sessions.models import Session
 from django.urls import reverse_lazy
@@ -9,8 +8,6 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 from .models import *
 from account.models import Profile
-from asgiref.sync import async_to_sync, sync_to_async
-from channels.db import database_sync_to_async
 from app.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
@@ -57,7 +54,7 @@ class MembersView(LoginRequiredMixin, TemplateView):
         return payload
 
 
-@method_decorator(user_passes_test(is_user_blocked), name='dispatch')
+@method_decorator(user_passes_test(is_user_blocked, login_url='index'), name='dispatch')
 class ChatRoomView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
     login_url = reverse_lazy('login')
@@ -107,7 +104,7 @@ def get_message_history(room):
     return messages
 
 
-@method_decorator(user_passes_test(is_user_blocked), name='dispatch')
+@method_decorator(user_passes_test(is_user_blocked, login_url='index'), name='dispatch')
 class GroupChatView(LoginRequiredMixin, TemplateView):
     template_name = 'chat/room.html'
     login_url = reverse_lazy('login')
@@ -151,6 +148,7 @@ def get_or_create_room(user, dest_user):
         UserChatRoom.objects.create(user=dest_user, chat_room=chat_room)
 
     return chat_room
+
 
 def get_active_users(logged_user=None):
     sessions = Session.objects.filter(expire_date__gte=timezone.now())
@@ -204,6 +202,3 @@ class SendMessageView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         pass
-
-
-
