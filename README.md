@@ -22,28 +22,20 @@ PSQL_DATABASE=''
 PSQL_USER=''
 PSQL_PASS=''
 PSQL_ENGINE='django.db.backends.postgresql'
-PSQL_CONTAINER_NAME=''
 DJANGO_CONTAINER_NAME=''
 FERNET_KEY=''
 ```
-### You can generate your key using 
+### Generate Django Secret Key
+```
+https://djecrety.ir/
+```
+### You can generate your Fernet key using
 ```
 Fernet.generate_key().decode()
 ```
 
-### Update the compose.yml file and set the Django and Postgres container names
-Example:
-```
-  psql:
-    container_name: pchat
 
-  django-soft:
-    container_name: dchat
-```
-### Make sure the container names match the container names in your .env file!
-
-
-#### - Run the Project
+## - Run the Project
 
 Use the run script to automatically run the containers
 ```sh
@@ -83,7 +75,7 @@ python3 app/manage.py createsuperuser
 ```
 Or from outside the container
 ```sh
-docker exec -it django-soft python3 app/manage.py createsuperuser 
+docker exec -it django-soft python3 app/manage.py createsuperuser
 ```
 
 

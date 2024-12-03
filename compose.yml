@@ -1,11 +1,11 @@
 services:
-  django-soft:
+  django:
     container_name: dchat
     build:
       context: ./
       dockerfile: ./Dockerfile
     depends_on:
-      - psql
+      - postgres
     restart: always
     entrypoint: bash ./launch.sh
     volumes:
@@ -19,8 +19,8 @@ services:
       - back
       - front
 
-  psql:
-    container_name: pchat
+  postgres:
+    container_name: psql
     image: postgres
     restart: unless-stopped
     shm_size: 256mb
