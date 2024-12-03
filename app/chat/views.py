@@ -1,7 +1,6 @@
-import json, time
+import time
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
 from django.contrib.sessions.models import Session
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -12,6 +11,8 @@ from app.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -169,32 +170,29 @@ def get_active_users(logged_user=None):
     }
 
 
+@api_view(['POST'])
 def send_message(request):
     """
     Endpoint to save a message to the db for later use
     """
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        content = data.get('content')
-        sender = data.get('sender')
-        room = data.get('room')
+    data = request.data
+    content = data.get('content')
+    sender = data.get('sender')
+    room = data.get('room')
 
-        room_obj = get_object_or_404(ChatRoom, uuid_redacted=room)
-        sender_obj = get_object_or_404(User, username=sender)
+    room_obj = get_object_or_404(ChatRoom, uuid_redacted=room)
+    sender_obj = get_object_or_404(User, username=sender)
 
-        message = Message.objects.create(
-            sender=sender_obj,
-            content=content,
-            chat_room=room_obj
-        )
-
-        return JsonResponse({
-            'status': 'Message sent!',
-            'message': message.id
-        })
-    return JsonResponse({
-        'error': 'Invalid request'}, status=400
+    message = Message.objects.create(
+        sender=sender_obj,
+        content=content,
+        chat_room=room_obj
     )
+
+    return Response({
+        'status': 'Message sent!',
+        'message': message.id
+    })
 
 
 class SendMessageView(LoginRequiredMixin, TemplateView):
