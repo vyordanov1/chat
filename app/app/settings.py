@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.environ.get("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
@@ -105,7 +105,7 @@ DATABASES = {
         "NAME": os.environ.get("PSQL_DATABASE"),
         "USER": os.environ.get("POSTGRES_MASTER_USER"),
         "PASSWORD": os.environ.get("PSQL_PASS"),
-        "HOST": os.environ.get("PSQL_CONTAINER_NAME"),
+        "HOST": os.environ.get("PSQL_HOST"),
         "PORT": os.environ.get("PSQL_PORT"),
     }
 }
