@@ -11,19 +11,19 @@ This project requires [Docker](https://docs.docker.com/engine/install/) or [Dock
 ALLOWED_HOSTS='127.0.0.1,localhost'
 DOMAIN='127.0.0.1'
 DOMAIN_URL='http://127.0.0.1'
-SECRET_KEY=''
+PSQL_ENGINE='django.db.backends.postgresql'
+PSQL_HOST='psql'
 STATIC_ROOT='static'
 STATIC_URL='/static/'
-PSQL_ROOT_PASSWORD=''
 POSTGRES_MASTER_USER='postgres'
-PSQL_HOST=''
+PSQL_ROOT_PASSWORD=''
 PSQL_PORT='5432'
 PSQL_DATABASE=''
 PSQL_USER=''
 PSQL_PASS=''
-PSQL_ENGINE='django.db.backends.postgresql'
 DJANGO_CONTAINER_NAME=''
 FERNET_KEY=''
+SECRET_KEY=''
 ```
 ### Generate Django Secret Key
 ```
@@ -33,7 +33,14 @@ https://djecrety.ir/
 ```
 Fernet.generate_key().decode()
 ```
+or use this online [generator](https://fernetkeygen.com/)
 
+# Important:
+Currently even the official docker images used for Postgres seem to be having issues if run via Docker
+and Docker Desktop for Windows.
+Suggested method for running the project on a Windows based machine is to install [Windows Subsystem for Linux](https://apps.microsoft.com/detail/9pdxgncfsczv?rtc=1&hl=en-US&gl=BG)
+and deploy it under a Linux based system.
+### Instructions on how to install docker after WSL installation [here](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
 
 ## - Run the Project
 
