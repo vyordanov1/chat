@@ -6,6 +6,7 @@ app/app/__pycache__/
 redis_data/
 app/chat/__pycache__/
 app/chat/templatetags/__pycache__/
+app/chat/migrations/__pycache__/
 app/chat/migrations/
 app/login/__pycache__/
 app/login/migrations/
@@ -22,4 +23,5 @@ app/account/management/commands/__init__.py
 app/static/django-browser-reload/
 app/__init__.py
 app/static/unfold/
-
+app/static/rest_framework/
+.psql_data/
