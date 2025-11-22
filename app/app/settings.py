@@ -61,6 +61,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'app.urls'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://chat.vasil.work",
+    "https://chat.vasil.work",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://chat.vasil.work",
+    "https://chat.vasil.work",
+]
+
 # TEMPLATES = [
 #     {
 #         'BACKEND': 'django.template.backends.django.DjangoTemplates',
