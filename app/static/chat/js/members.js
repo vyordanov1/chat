@@ -5,7 +5,7 @@ let chatButtons = document.querySelectorAll('#start-chat-btn');
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/members/'
+    + '/wss/members/'
 );
 function updateStatus(data){
     let membersDivs = document.getElementsByClassName('member-info');
@@ -37,4 +37,3 @@ chatSocket.onmessage = function(e) {
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
-
