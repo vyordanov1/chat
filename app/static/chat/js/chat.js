@@ -12,7 +12,7 @@ let location = window.location.protocol + "//" + window.location.hostname + ":" 
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/chat/'
+    + '/wss/chat/'
     + roomName
     + '/'
 );

@@ -1,8 +1,8 @@
 let location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 const indexSocket = new WebSocket(
-    'ws://'
+    'wss://'
     + window.location.host
-    + '/ws/index/'
+    + '/wss/index/'
 );
 
 
