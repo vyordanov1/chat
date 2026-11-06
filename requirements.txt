@@ -9,12 +9,12 @@ requests
 urllib3
 django_compressor
 djangorestframework
-asgiref==3.8.1
-sqlparse==0.6.0
-typing_extensions==4.11.0
+asgiref==3.13.0
+sqlparse==0.6.1
+typing_extensions==4.16.0
 tzdata==2026.6
-psycopg2==2.9.9
-psycopg2-binary==2.9.9
+psycopg2==2.9.13
+psycopg2-binary==2.9.13
 channels_redis
 channels
 daphne
